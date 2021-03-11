@@ -1,4 +1,34 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: #303030;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.sm-container {
+  padding-top: 3em;
+  display: flex;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+}
+
+.mat-secondary {
+  //color: $secondary !important;
+}
+
+.sm-snack-bar {
+  background-color: #3F51B5;
+}
+
+.sm-snack-bar-error {
+  background-color: crimson;
+}

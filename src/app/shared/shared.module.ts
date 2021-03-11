@@ -52,6 +52,7 @@ import { LoaderComponent } from './components/loader/loader.component';
     MatDividerModule,
     MatIconModule,
     MatMenuModule,
+    MatTabsModule
   ],
   exports: [
     MatTabsModule,
