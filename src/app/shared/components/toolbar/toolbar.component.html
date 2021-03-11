@@ -1,1 +1,22 @@
-<p>toolbar works!</p>
+<div>
+  <mat-toolbar color="primary">
+    <span class="clickable" (click)="goToHomePage()">ShibaMetrics</span>
+    <span class="spacer"></span>
+    <span *ngIf="isLoggedIn()">{{ userName }} </span>
+
+    <button *ngIf="isLoggedIn()" mat-icon-button>
+      <mat-icon [matMenuTriggerFor]="menu">menu</mat-icon>
+    </button>
+
+    <button *ngIf="!isLoggedIn()" mat-icon-button (click)="goToLogin()">
+      Вход
+    </button>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>Item 1</button>
+      <button mat-menu-item>Item 2</button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">Выйти из системы</button>
+    </mat-menu>
+  </mat-toolbar>
+</div>

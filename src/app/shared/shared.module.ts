@@ -32,56 +32,59 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { NgSelect2Module } from 'ng-select2';
 import { DevTestComponent } from './components/dev-test/dev-test.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
-
-
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
-	declarations: [
-	DevTestComponent,
-	ToolbarComponent],
-	imports: [
-		CommonModule,
-		FormsModule,
-		ReactiveFormsModule,
-		SharedRoutingModule,
-		MatProgressSpinnerModule,
-		MatButtonModule,
-		MatDialogModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatDatepickerModule,
-		MatMomentDateModule
-	],
-	exports: [
-		MatTabsModule,
-		MatInputModule,
-		MatButtonModule,
-		MatToolbarModule,
-		MatRadioModule,
-		MatProgressSpinnerModule,
-		MatIconModule,
-		MatMenuModule,
-		MatDividerModule,
-		MatCardModule,
-		MatTooltipModule,
-		MatDialogModule,
-		MatSnackBarModule,
-		MatSelectModule,
-		MatExpansionModule,
-		MatChipsModule,
-		MatDatepickerModule,
-		MatMomentDateModule,
-		MatTableModule,
-		MatCheckboxModule,
-		MatSidenavModule,
-		MatGridListModule,
-		MatListModule,
+  declarations: [DevTestComponent, ToolbarComponent, LoaderComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedRoutingModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    MatToolbarModule,
+    MatDividerModule,
+    MatIconModule,
+    MatMenuModule,
+  ],
+  exports: [
+    MatTabsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatRadioModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatMenuModule,
+    MatDividerModule,
+    MatCardModule,
+    MatTooltipModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatSelectModule,
+    MatExpansionModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatSidenavModule,
+    MatGridListModule,
+    MatListModule,
 
-		NgSelect2Module,
+    NgSelect2Module,
 
-		FormsModule,
-		ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule,
 
-	]
+    ToolbarComponent,
+    LoaderComponent
+  ],
 })
 export class SharedModule {}

@@ -39,7 +39,7 @@ export class RegisterLoginComponent implements OnInit {
   registerModel: UserRegisterDto = {
     email: '',
     name: '',
-    password: ''
+    password: '',
   };
   passwordConfirm: string;
 

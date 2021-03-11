@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "generateApi": "npx rimraf api/ && npx @openapitools/openapi-generator-cli generate -i http://localhost:5000/swagger/v1/swagger.json -g typescript-angular --additional-properties=ngVersion=11.2.5,fileNaming=kebab-case,providedInRoot=true,supportsES6=true,serviceSuffix=ApiService -o ./src/api/rest/api"
   },
   "private": true,
   "dependencies": {
