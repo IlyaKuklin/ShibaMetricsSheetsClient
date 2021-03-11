@@ -9,6 +9,9 @@ import { SharedModule } from './shared/shared.module';
 import { HomeComponent } from './components/home/home.component';
 import { AuthModule } from './auth/auth.module';
 import { HttpClientModule } from '@angular/common/http';
+import { httpInterceptorProviders } from './http-interceptors';
+import { BASE_PATH } from 'src/api/rest/api';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -23,7 +26,10 @@ import { HttpClientModule } from '@angular/common/http';
     // Всегда последний для 404ой
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [
+    { provide: BASE_PATH, useValue: environment.basePath },
+    httpInterceptorProviders,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
