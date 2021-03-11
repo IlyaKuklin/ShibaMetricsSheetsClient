@@ -30,12 +30,15 @@ import { MatListModule } from '@angular/material/list';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 import { NgSelect2Module } from 'ng-select2';
+import { DevTestComponent } from './components/dev-test/dev-test.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 
 
 @NgModule({
 	declarations: [
-	],
+	DevTestComponent,
+	ToolbarComponent],
 	imports: [
 		CommonModule,
 		FormsModule,

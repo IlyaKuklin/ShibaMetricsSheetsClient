@@ -1,0 +1,33 @@
+.auth-tabs {
+    margin: auto;
+  
+    &-tab {
+      display: flex;
+      padding-top: 5em;
+      &-form {
+        margin: auto;
+  
+        &__buttons {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-top: 3em;
+  
+          &-button {
+            padding: 0.5em 0;
+          }
+        }
+      }
+    }
+  }
+  
+  mat-form-field {
+    width: 300px;
+  }
+  
+  mat-radio-group {
+    display: flex;
+    padding-top: 0.5em;
+    flex-direction: column;
+  }
+  

@@ -1,0 +1,213 @@
+<div class="container sm-container">
+    <mat-tab-group
+      mat-align-tabs="end"
+      class="auth-tabs"
+      #tabs
+      (selectedTabChange)="selectedTabChange()"
+    >
+      <!-- Логин -->
+      <mat-tab label="Вход">
+        <div class="auth-tabs-tab">
+          <form
+            class="auth-tabs-tab-form"
+            #loginForm="ngForm"
+            (ngSubmit)="loginClick()"
+          >
+            <!-- Email -->
+            <div>
+              <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input
+                  matInput
+                  required
+                  email
+                  [errorStateMatcher]="errorStateMatcher"
+                  type="email"
+                  [(ngModel)]="loginModel.email"
+                  name="email"
+                  #emailLogin="ngModel"
+                />
+                <mat-error
+                  *ngIf="
+                    emailLogin.hasError('email') &&
+                    !emailLogin.hasError('required')
+                  "
+                >
+                  Введите корректный адрес электронной почты
+                </mat-error>
+                <mat-error *ngIf="emailLogin.hasError('required')">
+                  Поля <strong>обязательно</strong> для заполнения
+                </mat-error>
+              </mat-form-field>
+            </div>
+  
+            <!-- Password -->
+            <div>
+              <mat-form-field>
+                <mat-label>Пароль</mat-label>
+                <input
+                  matInput
+                  required
+                  minlength="4"
+                  [errorStateMatcher]="errorStateMatcher"
+                  type="password"
+                  [(ngModel)]="loginModel.password"
+                  name="password"
+                  #passwordLogin="ngModel"
+                />
+                <mat-error
+                  *ngIf="
+                    passwordLogin.hasError('minlength') &&
+                    !passwordLogin.hasError('required')
+                  "
+                >
+                  Длина пароля должна быть не меньше 4 символов
+                </mat-error>
+                <mat-error *ngIf="passwordLogin.hasError('required')">
+                  Поля <strong>обязательно</strong> для заполнения
+                </mat-error>
+              </mat-form-field>
+            </div>
+  
+            <!-- Login buttons -->
+            <div class="auth-tabs-tab-form__buttons">
+              <div class="auth-tabs-tab-form__buttons-button">
+                <button mat-raised-button type="submit" color="primary">
+                  Вход
+                </button>
+              </div>
+              <div class="auth-tabs-tab-form__buttons-button">
+                <button
+                  mat-button
+                  (click)="goToRegisterClick(); $event.preventDefault()"
+                >
+                  Нет аккаунта? Регистрация
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+  
+      <!-- Регистрация -->
+      <mat-tab label="Регистрация">
+        <div class="auth-tabs-tab">
+          <form
+            class="auth-tabs-tab-form"
+            #registerForm="ngForm"
+            (ngSubmit)="registerClick()"
+          >
+            <!-- Имя -->
+            <div>
+              <mat-form-field>
+                <mat-label>Имя</mat-label>
+                <input
+                  matInput
+                  required
+                  [errorStateMatcher]="errorStateMatcher"
+                  type="text"
+                  [(ngModel)]="registerModel.name"
+                  name="name"
+                  #name="ngModel"
+                />
+                <mat-error *ngIf="name.hasError('required')">
+                  Поля <strong>обязательно</strong> для заполнения
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <!-- Email -->
+            <div>
+              <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input
+                  matInput
+                  required
+                  email
+                  [errorStateMatcher]="errorStateMatcher"
+                  type="email"
+                  [(ngModel)]="registerModel.email"
+                  name="email"
+                  #emailRegister="ngModel"
+                />
+                <mat-error
+                  *ngIf="
+                    emailRegister.hasError('email') &&
+                    !emailRegister.hasError('required')
+                  "
+                >
+                  Введите корректный адрес электронной почты
+                </mat-error>
+                <mat-error *ngIf="emailRegister.hasError('required')">
+                  Поля <strong>обязательно</strong> для заполнения
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <!-- Password -->
+            <div>
+              <mat-form-field>
+                <mat-label>Пароль</mat-label>
+                <input
+                  matInput
+                  required
+                  minlength="4"
+                  [errorStateMatcher]="errorStateMatcher"
+                  type="password"
+                  [(ngModel)]="registerModel.password"
+                  name="password"
+                  #passwordRegister="ngModel"
+                />
+                <mat-error
+                  *ngIf="
+                    passwordRegister.hasError('minlength') &&
+                    !passwordRegister.hasError('required')
+                  "
+                >
+                  Длина пароля должна быть не меньше 4 символов
+                </mat-error>
+                <mat-error *ngIf="passwordRegister.hasError('required')">
+                  Поля <strong>обязательно</strong> для заполнения
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <!-- Password confirmation -->
+            <div>
+              <mat-form-field>
+                <mat-label>Подтверждение пароля</mat-label>
+                <input
+                  matInput
+                  required
+                  minlength="4"
+                  [errorStateMatcher]="errorStateMatcher"
+                  type="password"
+                  [(ngModel)]="passwordConfirm"
+                  name="passwordConfirm"
+                  #passwordRegisterConfirm="ngModel"
+                />
+                <mat-error
+                  *ngIf="
+                    passwordRegisterConfirm.hasError('minlength') &&
+                    !passwordRegisterConfirm.hasError('required')
+                  "
+                >
+                  Длина пароля должна быть не меньше 4 символов
+                </mat-error>
+                <mat-error *ngIf="passwordRegisterConfirm.hasError('required')">
+                  Поля <strong>обязательно</strong> для заполнения
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="auth-tabs-tab-form__buttons">
+              <div class="auth-tabs-tab-form__buttons-button">
+                <button type="submit" mat-raised-button color="primary">
+                  Регистрация
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  
+  <sm-loader></sm-loader>
+  
