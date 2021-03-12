@@ -35,6 +35,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { InfoSnackbarComponent } from './components/info-snackbar/info-snackbar.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { SelectOptionDialogComponent } from './components/select-option-dialog/select-option-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     LoaderComponent,
     InfoSnackbarComponent,
     ConfirmDialogComponent,
+    SelectOptionDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -61,6 +63,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     MatIconModule,
     MatMenuModule,
     MatTabsModule,
+    MatSelectModule
   ],
   exports: [
     MatTabsModule,

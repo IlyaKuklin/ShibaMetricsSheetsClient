@@ -1,0 +1,16 @@
+<div>
+  <h3 mat-dialog-title>{{ data.header }}</h3>
+  <mat-dialog-content>
+    <mat-select [(ngModel)]="selectedOption">
+      <mat-option *ngFor="let option of data.options" [value]="option"
+        >{{ option }}
+      </mat-option>
+    </mat-select>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Отмена</button>
+    <button mat-button [mat-dialog-close]="selectedOption" color="accent">
+      Ок
+    </button>
+  </mat-dialog-actions>
+</div>
