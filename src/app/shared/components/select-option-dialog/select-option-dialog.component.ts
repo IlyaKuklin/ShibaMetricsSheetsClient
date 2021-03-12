@@ -10,7 +10,9 @@ import { ISelectOptionDialogData } from '../../services/dialog.service';
 export class SelectOptionDialogComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: ISelectOptionDialogData) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.selectedOption = this.data.options[0];
+  }
 
   selectedOption: string;
 }

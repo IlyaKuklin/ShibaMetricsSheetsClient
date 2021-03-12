@@ -15,9 +15,9 @@
         <mat-expansion-panel *ngFor="let source of model">
           <mat-expansion-panel-header>
             <mat-panel-title> {{ source.name }} </mat-panel-title>
-            <mat-panel-description> desc </mat-panel-description>
+            <mat-panel-description> {{ source.type }} </mat-panel-description>
           </mat-expansion-panel-header>
-          {{source.type}}
+          
         </mat-expansion-panel>
       </mat-accordion>
     </div>
