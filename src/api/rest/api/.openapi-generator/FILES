@@ -4,6 +4,7 @@ api.module.ts
 api/api.ts
 api/auth.service.ts
 api/clients.service.ts
+api/sources.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -12,6 +13,9 @@ model/client-create-update-dto.ts
 model/client-dto.ts
 model/models.ts
 model/role.ts
+model/sm-report-type.ts
+model/sm-source-create-update-dto.ts
+model/sm-source-dto.ts
 model/user-auth-dto.ts
 model/user-auth-response-dto.ts
 model/user-register-dto.ts
