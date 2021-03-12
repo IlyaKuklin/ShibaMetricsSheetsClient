@@ -1,1 +1,8 @@
-<p>home works!</p>
+<div class="wrapper">
+  <div class="container grid" *ngIf="isLoggedIn()">
+    <div>
+      <h2>Мои клиенты</h2>
+      <sm-clients-list></sm-clients-list>
+    </div>
+  </div>
+</div>

@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
-  selector: 'sm-home',
+  selector: 'sm',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  constructor(private readonly authService: AuthService) {}
 
-  constructor() { }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
   }
-
 }
