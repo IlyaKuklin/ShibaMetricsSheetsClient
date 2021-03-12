@@ -25,6 +25,11 @@
                 >delete</mat-icon
               >
             </button>
+
+            <sm-ga-source *ngIf="source.type == SMReportType.Ga">
+
+            </sm-ga-source>
+
           </div>
         </mat-expansion-panel>
       </mat-accordion>

@@ -38,6 +38,8 @@ export class SourcesListComponent implements OnInit {
   isLoading: boolean;
   model: SMSourceDto[];
 
+  SMReportType = SMReportType;
+
   add(): void {
     this.dialogService
       .selectOptionDialog({
