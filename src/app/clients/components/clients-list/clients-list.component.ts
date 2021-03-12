@@ -11,7 +11,7 @@ import { CreateUpdateClientComponent } from '../create-update-client/create-upda
 @Component({
   selector: 'sm-clients-list',
   templateUrl: './clients-list.component.html',
-  styleUrls: ['./clients-list.component.scss']
+  styleUrls: ['./clients-list.component.scss'],
 })
 export class ClientsListComponent implements OnInit {
   constructor(
@@ -28,12 +28,10 @@ export class ClientsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.clientsApiService.apiClientsGetAllGet().subscribe(
-      (response) => {
-        this.model = response;
-        this.isLoading = false;
-      }
-    );
+    this.clientsApiService.apiClientsGetAllGet().subscribe((response) => {
+      this.model = response;
+      this.isLoading = false;
+    });
   }
 
   isLoading: boolean;
@@ -91,7 +89,7 @@ export class ClientsListComponent implements OnInit {
     } else this.model.push(dto);
   }
 
-  goToProjects(clientId: number): void {
-    this.router.navigate([`/clients/${clientId}/projects`]);
+  goToSources(clientId: number): void {
+    this.router.navigate([`/clients/${clientId}/sources`]);
   }
 }

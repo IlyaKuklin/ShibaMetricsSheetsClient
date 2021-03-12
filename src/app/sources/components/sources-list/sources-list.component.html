@@ -1,0 +1,25 @@
+<div class="wrapper">
+  <h2>Источники</h2>
+  <div *ngIf="!isLoading">
+    <button
+      mat-raised-button
+      color="accent"
+      class="clients-wrapper-btn"
+      (click)="add()"
+    >
+      <mat-icon aria-hidden="false" aria-label="delete">add</mat-icon>
+      добавить
+    </button>
+    <div class="sources-list">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let source of model">
+          <mat-expansion-panel-header>
+            <mat-panel-title> {{ source.name }} </mat-panel-title>
+            <mat-panel-description> desc </mat-panel-description>
+          </mat-expansion-panel-header>
+          inner
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>

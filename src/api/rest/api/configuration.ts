@@ -120,6 +120,6 @@ export class Configuration {
     }
 
     public lookupCredential(key: string): string | undefined {
-        return undefined;
+        return null
     }
 }

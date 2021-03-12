@@ -13,7 +13,7 @@
       <div *ngFor="let client of model" class="client-data">
         <mat-card class="client-data-card">
           <mat-card-header>
-            <mat-card-title (click)="goToProjects(client.id)" class="clickable">
+            <mat-card-title (click)="goToSources(client.id)" class="clickable">
               {{ client.name }}
             </mat-card-title>
             <mat-card-subtitle>{{ client.description }}</mat-card-subtitle>

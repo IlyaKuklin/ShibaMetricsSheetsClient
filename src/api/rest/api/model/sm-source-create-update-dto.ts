@@ -17,6 +17,8 @@ export interface SMSourceCreateUpdateDto {
     clientId?: number;
     name?: string | null;
     type?: SMReportType;
+    spreadSheetId?: string | null;
+    rangeName?: string | null;
     rawData?: string | null;
     rawMetadata?: string | null;
 }
