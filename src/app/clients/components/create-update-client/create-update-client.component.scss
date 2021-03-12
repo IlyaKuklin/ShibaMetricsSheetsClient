@@ -1,0 +1,39 @@
+.client {
+  &-form {
+    margin: auto;
+
+    &-field {
+      &_textarea {
+        overflow: hidden;
+        resize: none;
+      }
+    }
+
+    &__buttons {
+      display: flex;
+
+      & > div:nth-child(1) {
+        flex: 1;
+      }
+    }
+  }
+}
+
+mat-dialog-content {
+  width: 30em;
+  overflow: hidden;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  mat-dialog-content {
+    width: 20em;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+}

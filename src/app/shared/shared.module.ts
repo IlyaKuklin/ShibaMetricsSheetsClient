@@ -33,9 +33,17 @@ import { NgSelect2Module } from 'ng-select2';
 import { DevTestComponent } from './components/dev-test/dev-test.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { InfoSnackbarComponent } from './components/info-snackbar/info-snackbar.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [DevTestComponent, ToolbarComponent, LoaderComponent],
+  declarations: [
+    DevTestComponent,
+    ToolbarComponent,
+    LoaderComponent,
+    InfoSnackbarComponent,
+    ConfirmDialogComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -52,7 +60,7 @@ import { LoaderComponent } from './components/loader/loader.component';
     MatDividerModule,
     MatIconModule,
     MatMenuModule,
-    MatTabsModule
+    MatTabsModule,
   ],
   exports: [
     MatTabsModule,
@@ -85,7 +93,7 @@ import { LoaderComponent } from './components/loader/loader.component';
     ReactiveFormsModule,
 
     ToolbarComponent,
-    LoaderComponent
+    LoaderComponent,
   ],
 })
 export class SharedModule {}

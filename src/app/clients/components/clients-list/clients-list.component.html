@@ -1,0 +1,42 @@
+<div>
+  <div *ngIf="!isLoading" class="clients-wrapper">
+    <button
+      mat-raised-button
+      color="accent"
+      class="clients-wrapper-btn"
+      (click)="addClick()"
+    >
+      <mat-icon aria-hidden="false" aria-label="delete">add</mat-icon>
+      добавить
+    </button>
+    <div class="clients-wrapper-list">
+      <div *ngFor="let client of model" class="client-data">
+        <mat-card class="client-data-card">
+          <mat-card-header>
+            <mat-card-title (click)="goToProjects(client.id)" class="clickable">
+              {{ client.name }}
+            </mat-card-title>
+            <mat-card-subtitle>{{ client.description }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content> </mat-card-content>
+          <mat-card-actions class="client-data-card_actions">
+            <button mat-button (click)="editClick(client.id)">
+              <mat-icon aria-hidden="false" aria-label="edit">edit</mat-icon>
+            </button>
+            <button color="warn" mat-button (click)="delete(client.id)">
+              <mat-icon aria-hidden="false" aria-label="delete"
+                >delete</mat-icon
+              >
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading">
+    <mat-spinner style="margin: auto"></mat-spinner>
+  </div>
+</div>
+
+<sm-loader></sm-loader>

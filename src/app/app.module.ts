@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './http-interceptors';
 import { BASE_PATH } from 'src/api/rest/api';
 import { environment } from 'src/environments/environment';
+import { ClientsModule } from './clients/clients.module';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -21,6 +22,7 @@ import { environment } from 'src/environments/environment';
 
     SharedModule,
     AuthModule,
+    ClientsModule,
 
     HttpClientModule,
     // Всегда последний для 404ой

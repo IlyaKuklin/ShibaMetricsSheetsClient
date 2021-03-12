@@ -1,0 +1,62 @@
+<div class="sm-contaner">
+  <h3 mat-dialog-title>Добавление клиента</h3>
+
+  <mat-dialog-content>
+    <div *ngIf="!model || isLoading">
+      <mat-spinner style="margin: auto"></mat-spinner>
+    </div>
+    <div class="client-form-wrapper" *ngIf="!isLoading">
+      <form
+        class="client-form"
+        *ngIf="model"
+        #clientForm="ngForm"
+        (ngSubmit)="submit()"
+      >
+        <!-- Название -->
+        <div class="client-form-field">
+          <mat-form-field>
+            <mat-label>Название</mat-label>
+            <input
+              matInput
+              required
+              [errorStateMatcher]="errorStateMatcher"
+              type="text"
+              name="name"
+              [(ngModel)]="model.name"
+              #name="ngModel"
+            />
+            <mat-error *ngIf="name.hasError('required')">
+              Поля <strong>обязательно</strong> для заполнения
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Описание -->
+        <div class="client-form-field">
+          <mat-form-field>
+            <mat-label>Описание</mat-label>
+            <textarea
+              class="client-form-field_textarea"
+              matInput
+              name="description"
+              [(ngModel)]="model.description"
+              #description="ngModel"
+              rows="4"
+            >
+            </textarea>
+          </mat-form-field>
+        </div>
+        <div class="client-form__buttons">
+          <div class="client-form__buttons-button">
+            <button mat-button [mat-dialog-close]>Отмена</button>
+          </div>
+          <div class="client-form__buttons-button">
+            <button mat-raised-button type="submit" color="primary">
+              Создать
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+</div>

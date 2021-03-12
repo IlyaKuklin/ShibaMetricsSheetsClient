@@ -1,0 +1,22 @@
+.clients-wrapper {
+  &-list {
+    display: flex;
+    flex-direction: column;
+  }
+  &-btn{
+    margin-bottom: 1em;
+  }
+}
+
+.client-data {
+  margin: 0.5em 0;
+
+  &-card {
+    background-color: #E8EAF6;
+
+    &_actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
