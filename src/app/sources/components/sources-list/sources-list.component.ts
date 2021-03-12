@@ -6,6 +6,7 @@ import { SMReportType } from 'src/api/rest/api/model/sm-report-type';
 import { SMSourceCreateUpdateDto } from 'src/api/rest/api/model/sm-source-create-update-dto';
 import { SMSourceDto } from 'src/api/rest/api/model/sm-source-dto';
 import { DialogService } from 'src/app/shared/services/dialog.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'sm-sources-list',
@@ -16,7 +17,8 @@ export class SourcesListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private readonly sourcesApiService: SourcesApiService,
-    private readonly dialogService: DialogService
+    private readonly dialogService: DialogService,
+    private readonly snackBarService: SnackbarService
   ) {}
 
   ngOnInit(): void {
@@ -64,6 +66,27 @@ export class SourcesListComponent implements OnInit {
           };
           this.sourcesApiService.apiSourcesPost(newSource).subscribe((dto) => {
             this.model.push(dto);
+            this.isLoading = false;
+          });
+        }
+      });
+  }
+
+  delete(sourceId: number): void {
+    this.dialogService
+      .confirmDialog({
+        header: 'Удаление источника',
+        message: 'Вы уверены, что хотите удалить отчёт?',
+      })
+      .subscribe((result) => {
+        if (result) {
+          this.isLoading = true;
+          this.sourcesApiService.apiSourcesDelete(sourceId).subscribe(() => {
+            this.snackBarService.show({
+              duration: 1000,
+              message: 'Удаление завершено',
+            });
+            this.model = this.model.filter((x) => x.id !== sourceId);
             this.isLoading = false;
           });
         }

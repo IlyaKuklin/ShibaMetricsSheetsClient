@@ -9,7 +9,11 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Отмена</button>
-    <button mat-button [mat-dialog-close]="selectedOption" color="accent">
+    <button
+      mat-raised-button
+      [mat-dialog-close]="selectedOption"
+      color="accent"
+    >
       Ок
     </button>
   </mat-dialog-actions>

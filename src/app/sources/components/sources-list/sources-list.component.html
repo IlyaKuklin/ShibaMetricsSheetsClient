@@ -14,12 +14,21 @@
       <mat-accordion>
         <mat-expansion-panel *ngFor="let source of model">
           <mat-expansion-panel-header>
-            <mat-panel-title> {{ source.name }} </mat-panel-title>
+            <mat-panel-title>
+              {{ source.name }}
+            </mat-panel-title>
             <mat-panel-description> {{ source.type }} </mat-panel-description>
           </mat-expansion-panel-header>
-          
+          <div>
+            <button mat-raised-button color="warn" (click)="delete(source.id)">
+              <mat-icon aria-hidden="false" aria-label="delete"
+                >delete</mat-icon
+              >
+            </button>
+          </div>
         </mat-expansion-panel>
       </mat-accordion>
     </div>
   </div>
 </div>
+<sm-loader></sm-loader>
