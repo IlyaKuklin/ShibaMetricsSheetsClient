@@ -37,6 +37,7 @@ export class SourcesListComponent implements OnInit {
   private clientId: number;
   isLoading: boolean;
   model: SMSourceDto[];
+  expandedIds: number[] = [];
 
   SMReportType = SMReportType;
 
@@ -93,5 +94,13 @@ export class SourcesListComponent implements OnInit {
           });
         }
       });
+  }
+
+  afterExpand(sourceId: number): void {
+    if (this.expandedIds.indexOf(sourceId) < 0) this.expandedIds.push(sourceId);
+  }
+
+  isVisible(sourceId: number): boolean {
+    return this.expandedIds.indexOf(sourceId) > -1;
   }
 }

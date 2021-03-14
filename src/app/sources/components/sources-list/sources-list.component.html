@@ -12,7 +12,10 @@
     </button>
     <div class="sources-list">
       <mat-accordion>
-        <mat-expansion-panel *ngFor="let source of model">
+        <mat-expansion-panel
+          *ngFor="let source of model"
+          (afterExpand)="afterExpand(source.id)"
+        >
           <mat-expansion-panel-header>
             <mat-panel-title>
               {{ source.name }}
@@ -26,10 +29,10 @@
               >
             </button>
 
-            <sm-ga-source *ngIf="source.type == SMReportType.Ga">
-
-            </sm-ga-source>
-
+            <div *ngIf="isVisible(source.id)">
+              <sm-ga-source *ngIf="source.type == SMReportType.Ga">
+              </sm-ga-source>
+            </div>
           </div>
         </mat-expansion-panel>
       </mat-accordion>

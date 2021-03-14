@@ -14,6 +14,7 @@ import { BASE_PATH } from 'src/api/rest/api';
 import { environment } from 'src/environments/environment';
 import { ClientsModule } from './clients/clients.module';
 import { SourcesModule } from './sources/sources.module';
+import { IntegrationGoogleModule } from './integration-google/integration-google.module';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -25,6 +26,7 @@ import { SourcesModule } from './sources/sources.module';
     AuthModule,
     ClientsModule,
     SourcesModule,
+    IntegrationGoogleModule,
 
     HttpClientModule,
     // Всегда последний для 404ой

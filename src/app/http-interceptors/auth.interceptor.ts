@@ -5,14 +5,15 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { AuthService } from '../auth/services/auth.service';
+import { SmGoogleAuthService } from '../integration-google/services/sm-google-auth.service';
 // import { SmGoogleAuthService } from '../integration-google/services/sm-google-auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
-    private readonly authService: AuthService
-  ) //private readonly googleAuthService: SmGoogleAuthService
-  {}
+    private readonly authService: AuthService,
+    private readonly googleAuthService: SmGoogleAuthService
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     // TODO: конфиг
@@ -25,12 +26,12 @@ export class AuthInterceptor implements HttpInterceptor {
         setHeaders: { Authorization: 'Bearer ' + jwtToken },
       });
 
-      //   if (this.googleAuthService.isUserSignedIn()) {
-      //     const googleToken = this.googleAuthService.getGoogleData().access_token;
-      //     authReq = authReq.clone({
-      //       setHeaders: { GoogleAuthorization: 'Google ' + googleToken },
-      //     });
-      //   }
+      if (this.googleAuthService.isUserSignedIn()) {
+        const googleToken = this.googleAuthService.getGoogleData().access_token;
+        authReq = authReq.clone({
+          setHeaders: { GoogleAuthorization: 'Google ' + googleToken },
+        });
+      }
 
       return next.handle(authReq);
     }
