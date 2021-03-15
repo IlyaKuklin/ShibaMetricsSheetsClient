@@ -6,7 +6,6 @@ import { AdminApiService } from './api/admin.service';
 import { AuthApiService } from './api/auth.service';
 import { ClientsApiService } from './api/clients.service';
 import { GoogleAnalyticsApiService } from './api/google-analytics.service';
-import { GoogleAnalyticsV4ApiService } from './api/google-analytics-v4.service';
 import { SourcesApiService } from './api/sources.service';
 
 @NgModule({

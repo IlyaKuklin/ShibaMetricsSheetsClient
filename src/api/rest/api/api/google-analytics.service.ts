@@ -18,6 +18,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { GAMetadataDto } from '../model/models';
+import { GAReportRequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -123,6 +124,66 @@ export class GoogleAnalyticsApiService {
         }
 
         return this.httpClient.get<GAMetadataDto>(`${this.configuration.basePath}/api/GoogleAnalytics/metadata`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Получение отчёта из GA.
+     * @param gAReportRequest 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiGoogleAnalyticsReportPost(gAReportRequest?: Array<GAReportRequest>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
+    public apiGoogleAnalyticsReportPost(gAReportRequest?: Array<GAReportRequest>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
+    public apiGoogleAnalyticsReportPost(gAReportRequest?: Array<GAReportRequest>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
+    public apiGoogleAnalyticsReportPost(gAReportRequest?: Array<GAReportRequest>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (Bearer) required
+        credential = this.configuration.lookupCredential('Bearer');
+        if (credential) {
+            headers = headers.set('Authorization', credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<any>(`${this.configuration.basePath}/api/GoogleAnalytics/report`,
+            gAReportRequest,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

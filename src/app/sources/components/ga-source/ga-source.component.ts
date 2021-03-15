@@ -8,7 +8,6 @@ import {
 	ProfileSummary,
 	WebPropertySummary
 } from 'src/api/rest/api';
-import { GoogleAnalyticsV4ApiService } from 'src/api/rest/api/api/google-analytics-v4.service';
 import { GoogleAnalyticsApiService } from 'src/api/rest/api/api/google-analytics.service';
 import { SmGoogleAuthService } from 'src/app/integration-google/services/sm-google-auth.service';
 import { Options } from 'select2';
