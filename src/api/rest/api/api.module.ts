@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
+import { AdminApiService } from './api/admin.service';
 import { AuthApiService } from './api/auth.service';
 import { ClientsApiService } from './api/clients.service';
 import { GoogleAnalyticsApiService } from './api/google-analytics.service';

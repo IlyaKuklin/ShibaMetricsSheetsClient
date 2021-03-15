@@ -15,6 +15,7 @@ import { environment } from 'src/environments/environment';
 import { ClientsModule } from './clients/clients.module';
 import { SourcesModule } from './sources/sources.module';
 import { IntegrationGoogleModule } from './integration-google/integration-google.module';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -23,6 +24,7 @@ import { IntegrationGoogleModule } from './integration-google/integration-google
     BrowserAnimationsModule,
 
     SharedModule,
+    AdminModule,
     AuthModule,
     ClientsModule,
     SourcesModule,

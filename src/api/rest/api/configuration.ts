@@ -120,7 +120,6 @@ export class Configuration {
     }
 
     public lookupCredential(key: string): string | undefined {
-        const value = this.credentials[key];
         return null;
     }
 }
