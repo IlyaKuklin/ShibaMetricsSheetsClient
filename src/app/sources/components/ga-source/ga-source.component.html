@@ -1,7 +1,81 @@
-<div>1
-  <!-- <div>
-    <mat-form-field appearance="standard">
-      <mat-label>Аккаунт</mat-label>
-    </mat-form-field>
-  </div> -->
+<div class="component-wrapper">
+  <!-- Учетные данные -->
+  <span>Учетные данные</span>
+  <div class="source-category">
+    <div class="source-category_item">
+      <mat-form-field appearance="standard">
+        <mat-label>Аккаунт</mat-label>
+        <mat-select [(value)]="selectedSummaryId"
+                    (selectionChange)="onSummaryChange()">
+          <mat-option *ngFor="let summary of summaries"
+                      [value]="summary.id">{{ summary.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="source-category_item">
+      <mat-form-field appearance="standard">
+        <mat-label>Property</mat-label>
+        <mat-select [(value)]="selectedPropertyId"
+                    [disabled]="!selectedPropertyId"
+                    (selectionChange)="onPropertyChange()">
+          <mat-option *ngFor="let property of properties"
+                      [value]="property.id">{{ property.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="source-category_item">
+      <mat-form-field appearance="standard">
+        <mat-label>Представление</mat-label>
+        <mat-select [(value)]="selectedProfileId"
+                    [disabled]="!selectedProfileId"
+                    (selectionChange)="onProfileChange()">
+          <mat-option *ngFor="let profile of profiles"
+                      [value]="profile.id">{{ profile.name }}</mat-option>
+        </mat-select>
+
+      </mat-form-field>
+    </div>
+  </div>
+
+
+  <!-- Даты -->
+  <span>Дата</span>
+  <div class="source-category">
+    <div class="source-category_item">
+      <mat-form-field appearance="standard">
+        <mat-label>Выбор даты</mat-label>
+        <mat-date-range-input [rangePicker]="picker"
+                              [formGroup]="datesRange">
+          <input matStartDate
+                 formControlName="start"
+                 placeholder="Начало" />
+          <input matEndDate
+                 formControlName="end"
+                 placeholder="Конец" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix
+                               [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-error *ngIf="
+                  datesRange.controls.start.hasError('matStartDateInvalid')
+                ">Invalid start date</mat-error>
+        <mat-error *ngIf="datesRange.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Метрики -->
+  <span>Метрики</span>
+  <div class="source-category">
+    <div class="source-category_item">
+      <ng-select2 [allowClear]="true"
+                  [options]="s2_options"
+                  [data]="gaMetrics"
+                  [(ngModel)]="selectedMetricIds">
+      </ng-select2>
+    </div>
+  </div>
+
 </div>

@@ -12,6 +12,8 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/account-summaries.ts
+model/account-summary.ts
 model/client-create-update-dto.ts
 model/client-dto.ts
 model/ga-cohort-group.ts
@@ -21,10 +23,15 @@ model/ga-date-range-values.ts
 model/ga-date-range.ts
 model/ga-dimension-filter-clause.ts
 model/ga-dimension-filter.ts
+model/ga-dimension-grouping-dto.ts
 model/ga-dimension.ts
 model/ga-dynamic-segment.ts
+model/ga-metadata-dimension-dto.ts
+model/ga-metadata-dto.ts
+model/ga-metadata-metric-dto.ts
 model/ga-metric-filter-clause.ts
 model/ga-metric-filter.ts
+model/ga-metric-grouping-dto.ts
 model/ga-metric-header-entry.ts
 model/ga-metric-header.ts
 model/ga-metric.ts
@@ -48,6 +55,7 @@ model/ga-sequence-segment.ts
 model/ga-simple-segment.ts
 model/gaor-filters-for-segment.ts
 model/models.ts
+model/profile-summary.ts
 model/role.ts
 model/sm-report-type.ts
 model/sm-source-create-update-dto.ts
@@ -55,4 +63,5 @@ model/sm-source-dto.ts
 model/user-auth-dto.ts
 model/user-auth-response-dto.ts
 model/user-register-dto.ts
+model/web-property-summary.ts
 variables.ts

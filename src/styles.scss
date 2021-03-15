@@ -1,37 +1,41 @@
 html,
 body {
-  height: 100%;
+	height: 100%;
 }
 body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+	margin: 0;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .sm-container {
-  padding-top: 3em;
-  display: flex;
+	padding-top: 3em;
+	display: flex;
 }
 
 .clickable {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .grid {
-  display: grid;
+	display: grid;
 }
 
 .mat-secondary {
-  //color: $secondary !important;
+	//color: $secondary !important;
 }
 
 .sm-snack-bar {
-  background-color: #673ab7;
+	background-color: #673ab7;
 }
 
 .sm-snack-bar-error {
-  background-color: crimson;
+	background-color: crimson;
 }
 
 .wrapper {
-  padding: 3em;
+	padding: 3em;
+}
+
+.component-wrapper {
+	padding-top: 2em;
 }

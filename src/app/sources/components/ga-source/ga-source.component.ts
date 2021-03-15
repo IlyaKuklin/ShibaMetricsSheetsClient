@@ -1,30 +1,111 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { forkJoin } from 'rxjs';
+import { AccountSummary, GAMetadataDto, GAMetricGroupingDto, ProfileSummary, WebPropertySummary } from 'src/api/rest/api';
 import { GoogleAnalyticsV4ApiService } from 'src/api/rest/api/api/google-analytics-v4.service';
 import { GoogleAnalyticsApiService } from 'src/api/rest/api/api/google-analytics.service';
 import { SmGoogleAuthService } from 'src/app/integration-google/services/sm-google-auth.service';
+import { Options } from 'select2';
+
 
 @Component({
-  selector: 'sm-ga-source',
-  templateUrl: './ga-source.component.html',
-  styleUrls: ['./ga-source.component.scss'],
+	selector: 'sm-ga-source',
+	templateUrl: './ga-source.component.html',
+	styleUrls: [ './ga-source.component.scss' ]
 })
 export class GaSourceComponent implements OnInit {
-  constructor(
-    private readonly googleAuthService: SmGoogleAuthService,
-    private readonly googleAnalyticsApiService: GoogleAnalyticsApiService,
-    private readonly googleAnalyticsV4ApiService: GoogleAnalyticsV4ApiService
-  ) {
-    if (!this.googleAuthService.isUserSignedIn()) {
-      this.googleAuthService.signIn();
-    }
+	constructor(
+		private readonly googleAuthService: SmGoogleAuthService,
+		private readonly googleAnalyticsApiService: GoogleAnalyticsApiService
+	) {
+		if (!this.googleAuthService.isUserSignedIn()) {
+			this.googleAuthService.signIn();
+		}
+	}
 
-    forkJoin([
-      this.googleAnalyticsApiService.apiGoogleAnalyticsMetadataGet()
-    ]).subscribe(response => {
-      
-    })
+	metadata: GAMetadataDto;
+  gaMetrics: GAMetricGroupingDto[];
+
+	summaries: AccountSummary[];
+	selectedSummaryId: string;
+
+	properties: WebPropertySummary[];
+	selectedPropertyId: string;
+
+	profiles: ProfileSummary[];
+	selectedProfileId: string;
+
+  datesRange: FormGroup = new FormGroup({
+		start: new FormControl(),
+		end: new FormControl()
+	});
+
+  selectedMetricIds: string[];
+	selectedDimensionIds: string[] = [];
+
+  s2_options: Options;
+
+	ngOnInit(): void {
+		this.googleAnalyticsApiService.apiGoogleAnalyticsMetadataGet().subscribe((response: GAMetadataDto) => {
+			this.metadata = response;
+			this.summaries = this.metadata.accountSummaries.items;
+      this.gaMetrics = this.metadata.metricGroupings;
+		});
+    this.s2_options = new S2Options().s2_options;
+	}
+
+	onSummaryChange() {
+		const summary = this.summaries.find((x) => x.id === this.selectedSummaryId);
+		if (summary) {
+			this.properties = summary.webProperties;
+			this.selectedPropertyId = this.properties[0].id;
+		} else {
+			this.selectedPropertyId = null;
+		}
+		this.onPropertyChange();
+	}
+
+	onPropertyChange() {
+		const property = this.properties.find((x) => x.id === this.selectedPropertyId);
+		if (property) {
+			this.profiles = property.profiles;
+			this.selectedProfileId = this.profiles[0].id;
+		} else {
+			this.selectedProfileId = null;
+		}
+		this.onProfileChange();
+	}
+
+	onProfileChange() {}
+}
+
+class S2Options {
+  s2_templateSelection = (state: any): any | string => {
+		return state.uiName;
+	};
+
+	s2_templateResult = (state: any): any | string => {
+		return state.uiName;
+	};
+
+	s2_matcher = (term: string, text: string, option: any) => {
+		if (!option.uiName) return false;
+		term = term.toLowerCase();
+		let searchable = option.uiName.toLowerCase();
+		if (searchable.indexOf(term) >= 0) return true;
+		return false;
+	};
+
+	s2_options: Options = {
+		width: '100%',
+		multiple: true,
+		tags: true,
+		templateSelection: this.s2_templateSelection,
+		templateResult: this.s2_templateResult,
+		matcher: this.s2_matcher
+	};
+
+  getOptions() {
+    return this.s2_options;
   }
-
-  ngOnInit(): void {}
 }
