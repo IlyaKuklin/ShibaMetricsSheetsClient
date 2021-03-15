@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { forkJoin } from 'rxjs';
 import {
 	AccountSummary,
 	GADimensionGroupingDto,
@@ -65,7 +64,6 @@ export class GaSourceComponent implements OnInit {
 			this.gaMetrics = this.metadata.metricGroupings;
 			this.gaDimensions = this.metadata.dimensionGroupings;
 			this.isLoading = false;
-
 		});
 		this.s2_options = new S2Options().s2_options;
 	}

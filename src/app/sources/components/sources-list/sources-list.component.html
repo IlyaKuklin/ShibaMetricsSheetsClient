@@ -1,33 +1,69 @@
 <div class="wrapper">
   <h2>Источники</h2>
   <div *ngIf="!isLoading">
-    <button
-      mat-raised-button
-      color="accent"
-      class="clients-wrapper-btn"
-      (click)="add()"
-    >
-      <mat-icon aria-hidden="false" aria-label="delete">add</mat-icon>
+    <button mat-raised-button
+            color="accent"
+            class="clients-wrapper-btn"
+            (click)="add()">
+      <mat-icon aria-hidden="false"
+                aria-label="delete">add</mat-icon>
       добавить
     </button>
     <div class="sources-list">
       <mat-accordion>
-        <mat-expansion-panel
-          *ngFor="let source of model"
-          (afterExpand)="afterExpand(source.id)"
-        >
+        <mat-expansion-panel *ngFor="let source of model"
+                             (afterExpand)="afterExpand(source.id)">
           <mat-expansion-panel-header>
             <mat-panel-title>
               {{ source.name }}
             </mat-panel-title>
-            <mat-panel-description> {{ source.type }} </mat-panel-description>
+            <mat-panel-description> Тип: {{ source.type }} </mat-panel-description>
           </mat-expansion-panel-header>
           <div>
-            <button mat-raised-button color="warn" (click)="delete(source.id)">
-              <mat-icon aria-hidden="false" aria-label="delete"
-                >delete</mat-icon
-              >
-            </button>
+            <div>
+              <div class="source-management">
+                <div class="source-management_item">
+                  <mat-form-field>
+                    <mat-label>Название</mat-label>
+                    <input matInput
+                           type="text"
+                           [(ngModel)]="source.name">
+                  </mat-form-field>
+                </div>
+                <div class="source-management_item">
+                  <mat-form-field>
+                    <mat-label>Sheet ID</mat-label>
+                    <input matInput
+                           type="text">
+                  </mat-form-field>
+                </div>
+                <div class="source-management_item">
+                  <mat-form-field>
+                    <mat-label>Range Name</mat-label>
+                    <input matInput
+                           type="text">
+                  </mat-form-field>
+                </div>
+                <div class="source-management_item"
+                     style="flex: auto;">
+                  <button mat-stroked-button
+                          style="background: #2A8947; color: #fff;">
+                    Перейти в Google Sheets
+                  </button>
+                </div>
+                <div class="source-management_item">
+                  <button mat-raised-button
+                          color="warn"
+                          (click)="delete(source.id)">
+                    <mat-icon aria-hidden="false"
+                              aria-label="delete">delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <mat-divider></mat-divider>
+
+            </div>
 
             <div *ngIf="isVisible(source.id)">
               <sm-ga-source *ngIf="source.type == SMReportType.Ga">
@@ -39,4 +75,5 @@
     </div>
   </div>
 </div>
+
 <sm-loader></sm-loader>

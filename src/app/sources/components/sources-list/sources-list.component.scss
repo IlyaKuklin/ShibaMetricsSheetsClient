@@ -1,3 +1,22 @@
 .sources-list {
     padding-top: 2em;
 }
+
+.source-management {
+	display: flex;
+
+	&_item {
+		> mat-form-field {
+			width: 20em;
+		}
+
+		&__metricSelect {
+			width: 40em;
+			padding-top: 2em;
+		}
+	}
+
+	&_item:not(:first-child) {
+		margin-left: 2em;
+	}
+}
