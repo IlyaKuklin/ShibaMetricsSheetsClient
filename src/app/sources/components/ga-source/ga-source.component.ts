@@ -1,12 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { forkJoin } from 'rxjs';
-import { AccountSummary, GAMetadataDto, GAMetricGroupingDto, ProfileSummary, WebPropertySummary } from 'src/api/rest/api';
+import {
+	AccountSummary,
+	GADimensionGroupingDto,
+	GAMetadataDto,
+	GAMetricGroupingDto,
+	ProfileSummary,
+	WebPropertySummary
+} from 'src/api/rest/api';
 import { GoogleAnalyticsV4ApiService } from 'src/api/rest/api/api/google-analytics-v4.service';
 import { GoogleAnalyticsApiService } from 'src/api/rest/api/api/google-analytics.service';
 import { SmGoogleAuthService } from 'src/app/integration-google/services/sm-google-auth.service';
 import { Options } from 'select2';
-
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
 	selector: 'sm-ga-source',
@@ -23,8 +30,11 @@ export class GaSourceComponent implements OnInit {
 		}
 	}
 
+	isLoading: boolean;
+
 	metadata: GAMetadataDto;
-  gaMetrics: GAMetricGroupingDto[];
+	gaMetrics: GAMetricGroupingDto[];
+	gaDimensions: GADimensionGroupingDto[];
 
 	summaries: AccountSummary[];
 	selectedSummaryId: string;
@@ -35,23 +45,29 @@ export class GaSourceComponent implements OnInit {
 	profiles: ProfileSummary[];
 	selectedProfileId: string;
 
-  datesRange: FormGroup = new FormGroup({
+	datesRange: FormGroup = new FormGroup({
 		start: new FormControl(),
 		end: new FormControl()
 	});
 
-  selectedMetricIds: string[];
+	selectedMetricIds: string[];
 	selectedDimensionIds: string[] = [];
 
-  s2_options: Options;
+	splitByDay: boolean;
+
+	s2_options: Options;
 
 	ngOnInit(): void {
+		this.isLoading = true;
 		this.googleAnalyticsApiService.apiGoogleAnalyticsMetadataGet().subscribe((response: GAMetadataDto) => {
 			this.metadata = response;
 			this.summaries = this.metadata.accountSummaries.items;
-      this.gaMetrics = this.metadata.metricGroupings;
+			this.gaMetrics = this.metadata.metricGroupings;
+			this.gaDimensions = this.metadata.dimensionGroupings;
+			this.isLoading = false;
+
 		});
-    this.s2_options = new S2Options().s2_options;
+		this.s2_options = new S2Options().s2_options;
 	}
 
 	onSummaryChange() {
@@ -77,10 +93,22 @@ export class GaSourceComponent implements OnInit {
 	}
 
 	onProfileChange() {}
+
+	onSplitByDayChange($event: MatCheckboxChange) {
+		this.splitByDay = $event.checked;
+		if (this.splitByDay && this.selectedDimensionIds.indexOf('ga:date') == -1) {
+			this.selectedDimensionIds.push('ga:date');
+			this.selectedDimensionIds = [ ...this.selectedDimensionIds ];
+		} else this.selectedDimensionIds = this.selectedDimensionIds.filter((x) => x !== 'ga:date');
+	}
+
+	onDimensionsChange($event: string[]) {
+		this.splitByDay = $event.find((x) => x == 'ga:date') != null;
+	}
 }
 
 class S2Options {
-  s2_templateSelection = (state: any): any | string => {
+	s2_templateSelection = (state: any): any | string => {
 		return state.uiName;
 	};
 
@@ -104,8 +132,4 @@ class S2Options {
 		templateResult: this.s2_templateResult,
 		matcher: this.s2_matcher
 	};
-
-  getOptions() {
-    return this.s2_options;
-  }
 }
