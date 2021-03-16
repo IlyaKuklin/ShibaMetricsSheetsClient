@@ -106,10 +106,6 @@ export class GaSourceComponent implements OnInit {
 			}
 
 			this.isLoading = false;
-
-			setInterval(() => {
-				console.log(this.sourceMetadata);
-			}, 2000);
 		});
 
 		this.s2_options = new S2Options().s2_options;
