@@ -7,8 +7,8 @@
     <div class="source-category_item">
       <mat-form-field appearance="standard">
         <mat-label>Аккаунт</mat-label>
-        <mat-select [(value)]="selectedSummaryId"
-                    (selectionChange)="onSummaryChange()">
+        <mat-select [(ngModel)]="sourceMetadata.selectedSummaryId"
+                    (selectionChange)="onSummaryChange($event)">
           <mat-option *ngFor="let summary of summaries"
                       [value]="summary.id">{{ summary.name }}</mat-option>
         </mat-select>
@@ -18,8 +18,8 @@
     <div class="source-category_item">
       <mat-form-field appearance="standard">
         <mat-label>Property</mat-label>
-        <mat-select [(value)]="selectedPropertyId"
-                    [disabled]="!selectedPropertyId"
+        <mat-select [(ngModel)]="sourceMetadata.selectedPropertyId"
+                    [disabled]="!sourceMetadata.selectedSummaryId"
                     (selectionChange)="onPropertyChange()">
           <mat-option *ngFor="let property of properties"
                       [value]="property.id">{{ property.name }}</mat-option>
@@ -30,8 +30,8 @@
     <div class="source-category_item">
       <mat-form-field appearance="standard">
         <mat-label>Представление</mat-label>
-        <mat-select [(value)]="selectedProfileId"
-                    [disabled]="!selectedProfileId"
+        <mat-select [(ngModel)]="sourceMetadata.selectedProfileId"
+                    [disabled]="!sourceMetadata.selectedPropertyId"
                     (selectionChange)="onProfileChange()">
           <mat-option *ngFor="let profile of profiles"
                       [value]="profile.id">{{ profile.name }}</mat-option>
@@ -51,9 +51,11 @@
         <mat-date-range-input [rangePicker]="picker"
                               [formGroup]="datesRange">
           <input matStartDate
+                 [(ngModel)]="sourceMetadata.startDate"
                  formControlName="start"
                  placeholder="Начало" />
           <input matEndDate
+                 [(ngModel)]="sourceMetadata.endDate"
                  formControlName="end"
                  placeholder="Конец" />
         </mat-date-range-input>
@@ -79,7 +81,7 @@
                     [options]="s2_options"
                     [data]="gaMetrics"
                     [placeholder]="'Выбор метрики'"
-                    [(ngModel)]="selectedMetricIds">
+                    [(ngModel)]="sourceMetadata.selectedMetricIds">
         </ng-select2>
       </div>
     </div>
@@ -90,7 +92,7 @@
                     [options]="s2_options"
                     [data]="gaDimensions"
                     [placeholder]="'Выбор измерения'"
-                    [(ngModel)]="selectedDimensionIds"
+                    [(ngModel)]="sourceMetadata.selectedDimensionIds"
                     (valueChanged)="onDimensionsChange($event)">
         </ng-select2>
       </div>

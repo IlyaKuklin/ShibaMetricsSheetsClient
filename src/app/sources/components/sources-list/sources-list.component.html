@@ -52,7 +52,8 @@
                 <div class="source-management_item"
                      style="flex: auto;">
                   <button mat-stroked-button
-                          style="background: #2A8947; color: #fff;">
+                          style="background: #2A8947; color: #fff;"
+                          (click)="goToSheets(source.spreadSheetId)">
                     Перейти в Google Sheets
                   </button>
                 </div>

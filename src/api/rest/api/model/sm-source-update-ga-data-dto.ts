@@ -10,10 +10,12 @@
  * Do not edit the class manually.
  */
 import { GAReportRequest } from './ga-report-request';
+import { GASourceMetadataDto } from './ga-source-metadata-dto';
 
 
 export interface SMSourceUpdateGADataDto { 
     id?: number;
     reportRequests?: Array<GAReportRequest> | null;
+    metadata?: GASourceMetadataDto;
 }
 

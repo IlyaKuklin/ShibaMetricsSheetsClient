@@ -42,6 +42,7 @@ model/ga-segment-sequence-step.ts
 model/ga-segment.ts
 model/ga-sequence-segment.ts
 model/ga-simple-segment.ts
+model/ga-source-metadata-dto.ts
 model/gaor-filters-for-segment.ts
 model/models.ts
 model/profile-summary.ts

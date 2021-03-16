@@ -14,9 +14,14 @@ import {
 	ProfileSummary,
 	GAReportRequest,
 	GAMetric,
-	GADimension
+	GADimension,
+	GASourceMetadataDto,
+	SourcesApiService,
+	SMSourceDto
 } from 'src/api/rest/api';
 import * as _moment from 'moment';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
 	selector: 'sm-ga-source',
@@ -26,7 +31,9 @@ import * as _moment from 'moment';
 export class GaSourceComponent implements OnInit {
 	constructor(
 		private readonly googleAuthService: SmGoogleAuthService,
-		private readonly googleAnalyticsApiService: GoogleAnalyticsApiService
+		private readonly googleAnalyticsApiService: GoogleAnalyticsApiService,
+		private readonly sourcesApiService: SourcesApiService,
+		private readonly snackBarService: SnackbarService
 	) {
 		if (!this.googleAuthService.isUserSignedIn()) {
 			this.googleAuthService.signIn();
@@ -36,41 +43,45 @@ export class GaSourceComponent implements OnInit {
 	isLoading: boolean;
 
 	@Input() id: number;
+	source: SMSourceDto;
+	sourceMetadata: GASourceMetadataDto = {
+		startDate: '',
+		endDate: '',
+		selectedSummaryId: '',
+		selectedPropertyId: '',
+		selectedProfileId: '',
+		selectedMetricIds: [],
+		selectedDimensionIds: []
+	};
 
 	metadata: GAMetadataDto;
 	gaMetrics: GAMetricGroupingDto[];
 	gaDimensions: GADimensionGroupingDto[];
 
 	summaries: AccountSummary[];
-	selectedSummaryId: string;
 
-	properties: WebPropertySummary[];
-	selectedPropertyId: string;
+	get properties(): WebPropertySummary[] {
+		const summary = this.summaries.find((x) => x.id === this.sourceMetadata.selectedSummaryId);
+		if (summary) {
+			return summary.webProperties;
+		} else {
+			return [];
+		}
+	}
 
-	profiles: ProfileSummary[];
-	selectedProfileId: string;
+	get profiles(): ProfileSummary[] {
+		const property = this.properties.find((x) => x.id === this.sourceMetadata.selectedPropertyId);
+		if (property) {
+			return property.profiles;
+		} else {
+			return [];
+		}
+	}
 
 	datesRange: FormGroup = new FormGroup({
 		start: new FormControl(),
 		end: new FormControl()
 	});
-
-	selectedMetricIds: string[];
-	selectedDimensionIds: string[] = [];
-
-	get startDateMoment(): _moment.Moment {
-		const value = this.datesRange.controls['start'].value;
-		if (value) {
-			return _moment(value);
-		}
-	}
-
-	get endDateMoment(): _moment.Moment {
-		const value = this.datesRange.controls['end'].value;
-		if (value) {
-			return _moment(value);
-		}
-	}
 
 	splitByDay: boolean;
 
@@ -78,46 +89,52 @@ export class GaSourceComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.isLoading = true;
-		this.googleAnalyticsApiService.apiGoogleAnalyticsMetadataGet().subscribe((response: GAMetadataDto) => {
-			this.metadata = response;
+
+		forkJoin([
+			this.googleAnalyticsApiService.apiGoogleAnalyticsMetadataGet(),
+			this.sourcesApiService.apiSourcesGet(this.id)
+		]).subscribe((response: [GAMetadataDto, SMSourceDto]) => {
+			this.metadata = response[0];
 			this.summaries = this.metadata.accountSummaries.items;
 			this.gaMetrics = this.metadata.metricGroupings;
 			this.gaDimensions = this.metadata.dimensionGroupings;
+
+			this.source = response[1];
+			if (this.source.rawMetadata) {
+				this.sourceMetadata = JSON.parse(this.source.rawMetadata, this.camelCaseReviver);
+				if (this.sourceMetadata.selectedDimensionIds.indexOf('ga:date') > -1) this.splitByDay = true;
+			}
+
 			this.isLoading = false;
+
+			setInterval(() => {
+				console.log(this.sourceMetadata);
+			}, 2000);
 		});
+
 		this.s2_options = new S2Options().s2_options;
 	}
 
 	onSummaryChange() {
-		const summary = this.summaries.find((x) => x.id === this.selectedSummaryId);
-		if (summary) {
-			this.properties = summary.webProperties;
-			this.selectedPropertyId = this.properties[0].id;
-		} else {
-			this.selectedPropertyId = null;
-		}
-		this.onPropertyChange();
+		this.sourceMetadata.selectedPropertyId = '';
+		this.sourceMetadata.selectedProfileId = '';
 	}
 
 	onPropertyChange() {
-		const property = this.properties.find((x) => x.id === this.selectedPropertyId);
-		if (property) {
-			this.profiles = property.profiles;
-			this.selectedProfileId = this.profiles[0].id;
-		} else {
-			this.selectedProfileId = null;
-		}
-		this.onProfileChange();
+		this.sourceMetadata.selectedProfileId = '';
 	}
 
 	onProfileChange() {}
 
 	onSplitByDayChange($event: MatCheckboxChange) {
 		this.splitByDay = $event.checked;
-		if (this.splitByDay && this.selectedDimensionIds.indexOf('ga:date') == -1) {
-			this.selectedDimensionIds.push('ga:date');
-			this.selectedDimensionIds = [ ...this.selectedDimensionIds ];
-		} else this.selectedDimensionIds = this.selectedDimensionIds.filter((x) => x !== 'ga:date');
+		if (this.splitByDay && this.sourceMetadata.selectedDimensionIds.indexOf('ga:date') == -1) {
+			this.sourceMetadata.selectedDimensionIds.push('ga:date');
+			this.sourceMetadata.selectedDimensionIds = [ ...this.sourceMetadata.selectedDimensionIds ];
+		} else
+			this.sourceMetadata.selectedDimensionIds = this.sourceMetadata.selectedDimensionIds.filter(
+				(x) => x !== 'ga:date'
+			);
 	}
 
 	onDimensionsChange($event: string[]) {
@@ -125,13 +142,16 @@ export class GaSourceComponent implements OnInit {
 	}
 
 	processData(): void {
-		const gaMetrics = this.selectedMetricIds.map((x) => {
+		this.sourceMetadata.startDate = this.datesRange.controls['start'].value;
+		this.sourceMetadata.endDate = this.datesRange.controls['end'].value;
+
+		const gaMetrics = this.sourceMetadata.selectedMetricIds.map((x) => {
 			return {
 				expression: x,
 				formattingType: 'METRIC_TYPE_UNSPECIFIED'
 			} as GAMetric;
 		});
-		const gaDimensions = this.selectedDimensionIds.map((x) => {
+		const gaDimensions = this.sourceMetadata.selectedDimensionIds.map((x) => {
 			return {
 				name: x
 			} as GADimension;
@@ -139,11 +159,11 @@ export class GaSourceComponent implements OnInit {
 
 		const reportRequests: GAReportRequest[] = [
 			{
-				viewId: this.selectedProfileId,
+				viewId: this.sourceMetadata.selectedProfileId,
 				dateRanges: [
 					{
-						startDate: this.startDateMoment.format('YYYY-MM-DD'),
-						endDate: this.endDateMoment.format('YYYY-MM-DD')
+						startDate: _moment(this.sourceMetadata.startDate).format('YYYY-MM-DD'),
+						endDate: _moment(this.sourceMetadata.endDate).format('YYYY-MM-DD')
 					}
 				],
 				metrics: gaMetrics,
@@ -155,11 +175,27 @@ export class GaSourceComponent implements OnInit {
 		this.googleAnalyticsApiService
 			.apiGoogleAnalyticsReportPost({
 				id: this.id,
-				reportRequests: reportRequests
+				reportRequests: reportRequests,
+				metadata: this.sourceMetadata
 			})
 			.subscribe((response) => {
-				console.log(response);
+				this.snackBarService.show({
+					duration: 1000,
+					message: 'Таблица Google Sheets обновлена'
+				});
 			});
+	}
+
+	camelCaseReviver(key, value) {
+		if (value && typeof value === 'object') {
+			for (var k in value) {
+				if (/^[A-Z]/.test(k) && Object.hasOwnProperty.call(value, k)) {
+					value[k.charAt(0).toLowerCase() + k.substring(1)] = value[k];
+					delete value[k];
+				}
+			}
+		}
+		return value;
 	}
 }
 

@@ -30,6 +30,7 @@ export * from './ga-segment-metric-filter';
 export * from './ga-segment-sequence-step';
 export * from './ga-sequence-segment';
 export * from './ga-simple-segment';
+export * from './ga-source-metadata-dto';
 export * from './profile-summary';
 export * from './role';
 export * from './sm-report-type';

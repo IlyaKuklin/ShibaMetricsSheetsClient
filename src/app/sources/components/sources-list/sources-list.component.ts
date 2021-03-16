@@ -112,4 +112,9 @@ export class SourcesListComponent implements OnInit {
 		};
 		this.sourcesApiService.apiSourcesPatch(dto).subscribe((response) => {});
 	}
+
+	goToSheets(spreadSheetId) {
+		const url = `https://docs.google.com/spreadsheets/d/${spreadSheetId}`;
+		window.open(url, 'blank');
+	}
 }
