@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/admin.service.ts
@@ -50,6 +49,7 @@ model/role.ts
 model/sm-report-type.ts
 model/sm-source-create-update-dto.ts
 model/sm-source-dto.ts
+model/sm-source-update-ga-data-dto.ts
 model/sm-source-update-metadata-dto.ts
 model/user-auth-dto.ts
 model/user-auth-response-dto.ts

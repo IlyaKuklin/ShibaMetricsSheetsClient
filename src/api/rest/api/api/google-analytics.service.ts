@@ -18,7 +18,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { GAMetadataDto } from '../model/models';
-import { GAReportRequest } from '../model/models';
+import { SMSourceUpdateGADataDto } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -135,15 +135,14 @@ export class GoogleAnalyticsApiService {
     }
 
     /**
-     * Получение отчёта из GA.
-     * @param gAReportRequest 
+     * @param sMSourceUpdateGADataDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiGoogleAnalyticsReportPost(gAReportRequest?: Array<GAReportRequest>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiGoogleAnalyticsReportPost(gAReportRequest?: Array<GAReportRequest>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiGoogleAnalyticsReportPost(gAReportRequest?: Array<GAReportRequest>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiGoogleAnalyticsReportPost(gAReportRequest?: Array<GAReportRequest>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiGoogleAnalyticsReportPost(sMSourceUpdateGADataDto?: SMSourceUpdateGADataDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
+    public apiGoogleAnalyticsReportPost(sMSourceUpdateGADataDto?: SMSourceUpdateGADataDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
+    public apiGoogleAnalyticsReportPost(sMSourceUpdateGADataDto?: SMSourceUpdateGADataDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
+    public apiGoogleAnalyticsReportPost(sMSourceUpdateGADataDto?: SMSourceUpdateGADataDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -183,7 +182,7 @@ export class GoogleAnalyticsApiService {
         }
 
         return this.httpClient.post<any>(`${this.configuration.basePath}/api/GoogleAnalytics/report`,
-            gAReportRequest,
+            sMSourceUpdateGADataDto,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

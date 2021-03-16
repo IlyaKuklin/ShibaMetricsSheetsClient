@@ -1,17 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import {
-	AccountSummary,
-	GADimensionGroupingDto,
-	GAMetadataDto,
-	GAMetricGroupingDto,
-	ProfileSummary,
-	WebPropertySummary
-} from 'src/api/rest/api';
+
 import { GoogleAnalyticsApiService } from 'src/api/rest/api/api/google-analytics.service';
 import { SmGoogleAuthService } from 'src/app/integration-google/services/sm-google-auth.service';
 import { Options } from 'select2';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import {
+	GAMetadataDto,
+	GAMetricGroupingDto,
+	GADimensionGroupingDto,
+	AccountSummary,
+	WebPropertySummary,
+	ProfileSummary,
+	GAReportRequest,
+	GAMetric,
+	GADimension
+} from 'src/api/rest/api';
+import * as _moment from 'moment';
 
 @Component({
 	selector: 'sm-ga-source',
@@ -29,6 +34,8 @@ export class GaSourceComponent implements OnInit {
 	}
 
 	isLoading: boolean;
+
+	@Input() id: number;
 
 	metadata: GAMetadataDto;
 	gaMetrics: GAMetricGroupingDto[];
@@ -50,6 +57,20 @@ export class GaSourceComponent implements OnInit {
 
 	selectedMetricIds: string[];
 	selectedDimensionIds: string[] = [];
+
+	get startDateMoment(): _moment.Moment {
+		const value = this.datesRange.controls['start'].value;
+		if (value) {
+			return _moment(value);
+		}
+	}
+
+	get endDateMoment(): _moment.Moment {
+		const value = this.datesRange.controls['end'].value;
+		if (value) {
+			return _moment(value);
+		}
+	}
 
 	splitByDay: boolean;
 
@@ -101,6 +122,44 @@ export class GaSourceComponent implements OnInit {
 
 	onDimensionsChange($event: string[]) {
 		this.splitByDay = $event.find((x) => x == 'ga:date') != null;
+	}
+
+	processData(): void {
+		const gaMetrics = this.selectedMetricIds.map((x) => {
+			return {
+				expression: x,
+				formattingType: 'METRIC_TYPE_UNSPECIFIED'
+			} as GAMetric;
+		});
+		const gaDimensions = this.selectedDimensionIds.map((x) => {
+			return {
+				name: x
+			} as GADimension;
+		});
+
+		const reportRequests: GAReportRequest[] = [
+			{
+				viewId: this.selectedProfileId,
+				dateRanges: [
+					{
+						startDate: this.startDateMoment.format('YYYY-MM-DD'),
+						endDate: this.endDateMoment.format('YYYY-MM-DD')
+					}
+				],
+				metrics: gaMetrics,
+				dimensions: gaDimensions
+			}
+		];
+		reportRequests[0].includeEmptyRows = true;
+
+		this.googleAnalyticsApiService
+			.apiGoogleAnalyticsReportPost({
+				id: this.id,
+				reportRequests: reportRequests
+			})
+			.subscribe((response) => {
+				console.log(response);
+			});
 	}
 }
 
