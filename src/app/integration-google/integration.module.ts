@@ -25,4 +25,4 @@ let gapiClientConfig: NgGapiClientConfig = {
     }),
   ],
 })
-export class IntegrationGoogleModule {}
+export class IntegrationModule {}
