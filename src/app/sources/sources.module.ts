@@ -5,9 +5,10 @@ import { SourcesRoutingModule } from './sources-routing.module';
 import { SourcesListComponent } from './components/sources-list/sources-list.component';
 import { SharedModule } from '../shared/shared.module';
 import { GaSourceComponent } from './components/ga-source/ga-source.component';
+import { YdSourceComponent } from './components/yd-source/yd-source.component';
 
 @NgModule({
-  declarations: [SourcesListComponent, GaSourceComponent],
-  imports: [CommonModule, SourcesRoutingModule, SharedModule],
+	declarations: [ SourcesListComponent, GaSourceComponent, YdSourceComponent ],
+	imports: [ CommonModule, SourcesRoutingModule, SharedModule ]
 })
 export class SourcesModule {}

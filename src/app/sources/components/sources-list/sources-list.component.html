@@ -72,9 +72,15 @@
             </div>
 
             <div *ngIf="isVisible(source.id)">
+
               <sm-ga-source *ngIf="source.type == SMReportType.Ga"
                             [id]="source.id">
               </sm-ga-source>
+
+              <sm-yd-source *ngIf="source.type == SMReportType.Yd"
+                            [id]="source.id">
+              </sm-yd-source>
+
             </div>
           </div>
         </mat-expansion-panel>
