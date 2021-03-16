@@ -40,6 +40,8 @@ export class SourcesListComponent implements OnInit {
 
 	SMReportType = SMReportType;
 
+	spreadSheetsIdRegex = '1(\w|\-){43}';
+
 	add(): void {
 		this.dialogService
 			.selectOptionDialog({
