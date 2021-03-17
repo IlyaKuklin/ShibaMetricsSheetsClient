@@ -8,4 +8,6 @@ export * from './google-analytics.service';
 import { GoogleAnalyticsApiService } from './google-analytics.service';
 export * from './sources.service';
 import { SourcesApiService } from './sources.service';
-export const APIS = [AdminApiService, AuthApiService, ClientsApiService, GoogleAnalyticsApiService, SourcesApiService];
+export * from './yandex-direct.service';
+import { YandexDirectApiService } from './yandex-direct.service';
+export const APIS = [AdminApiService, AuthApiService, ClientsApiService, GoogleAnalyticsApiService, SourcesApiService, YandexDirectApiService];

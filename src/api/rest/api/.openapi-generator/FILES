@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/admin.service.ts
@@ -7,6 +8,7 @@ api/auth.service.ts
 api/clients.service.ts
 api/google-analytics.service.ts
 api/sources.service.ts
+api/yandex-direct.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -50,10 +52,18 @@ model/role.ts
 model/sm-report-type.ts
 model/sm-source-create-update-dto.ts
 model/sm-source-dto.ts
+model/sm-source-filter-operator.ts
+model/sm-source-filter.ts
 model/sm-source-update-ga-data-dto.ts
 model/sm-source-update-metadata-dto.ts
 model/user-auth-dto.ts
 model/user-auth-response-dto.ts
 model/user-register-dto.ts
 model/web-property-summary.ts
+model/yd-client-type.ts
+model/yd-client.ts
+model/yd-source-metadata-dto.ts
+model/yd-source-metadata-filter.ts
+model/yd-source-metadata-metric.ts
+model/yd-statistics-request-dto.ts
 variables.ts

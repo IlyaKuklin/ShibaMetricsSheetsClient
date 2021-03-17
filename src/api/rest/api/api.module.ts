@@ -7,6 +7,7 @@ import { AuthApiService } from './api/auth.service';
 import { ClientsApiService } from './api/clients.service';
 import { GoogleAnalyticsApiService } from './api/google-analytics.service';
 import { SourcesApiService } from './api/sources.service';
+import { YandexDirectApiService } from './api/yandex-direct.service';
 
 @NgModule({
   imports:      [],

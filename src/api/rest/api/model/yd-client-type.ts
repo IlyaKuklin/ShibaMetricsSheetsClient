@@ -11,8 +11,11 @@
  */
 
 
-export interface SMSourceSheetsDataGetDto { 
-    spreadSheetId?: string | null;
-    rangeName?: string | null;
-}
+export type YDClientType = 'CLIENT' | 'SUBCLIENT' | 'AGENCY';
+
+export const YDClientType = {
+    Client: 'CLIENT' as YDClientType,
+    Subclient: 'SUBCLIENT' as YDClientType,
+    Agency: 'AGENCY' as YDClientType
+};
 
