@@ -5,7 +5,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { AuthService } from '../auth/services/auth.service';
-import { SmGoogleAuthService } from '../integration-google/services/sm-google-auth.service';
+import { SmGoogleAuthService } from '../integration/services/sm-google-auth.service';
 // import { SmGoogleAuthService } from '../integration-google/services/sm-google-auth.service';
 
 @Injectable()

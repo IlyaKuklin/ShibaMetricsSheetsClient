@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { GoogleAnalyticsApiService } from 'src/api/rest/api/api/google-analytics.service';
-import { SmGoogleAuthService } from 'src/app/integration-google/services/sm-google-auth.service';
+import { SmGoogleAuthService } from 'src/app/integration/services/sm-google-auth.service';
 import { Options } from 'select2';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import {

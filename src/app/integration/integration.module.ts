@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GoogleApiModule, NgGapiClientConfig, NG_GAPI_CONFIG } from 'ng-gapi';
+import { YandexApiVerificationCodeReceiverComponent } from '../yandex-api-verification-code-receiver/yandex-api-verification-code-receiver.component';
 
 let gapiClientConfig: NgGapiClientConfig = {
   client_id:
@@ -16,7 +17,7 @@ let gapiClientConfig: NgGapiClientConfig = {
 };
 
 @NgModule({
-  declarations: [],
+  declarations: [YandexApiVerificationCodeReceiverComponent],
   imports: [
     CommonModule,
     GoogleApiModule.forRoot({

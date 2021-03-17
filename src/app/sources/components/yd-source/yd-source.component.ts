@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SMSourceDto } from 'src/api/rest/api';
-import { SmYandexAuthService } from 'src/app/integration-google/services/sm-yandex-auth.service';
+import { SMSourceDto, YandexDirectApiService } from 'src/api/rest/api';
+import { SmYandexAuthService } from 'src/app/integration/services/sm-yandex-auth.service';
 
 @Component({
 	selector: 'sm-yd-source',
@@ -8,7 +8,10 @@ import { SmYandexAuthService } from 'src/app/integration-google/services/sm-yand
 	styleUrls: [ './yd-source.component.scss' ]
 })
 export class YdSourceComponent implements OnInit {
-	constructor(private readonly yandexAuthService: SmYandexAuthService) {}
+	constructor(
+		private readonly yandexAuthService: SmYandexAuthService,
+		private readonly yandexDirectApiService: YandexDirectApiService
+	) {}
 
 	isLoading: boolean;
 
@@ -17,5 +20,9 @@ export class YdSourceComponent implements OnInit {
 
 	ngOnInit(): void {
 		if (!this.yandexAuthService.isSignedInYandex) this.yandexAuthService.authorize();
+
+		this.yandexDirectApiService.apiYandexDirectMetadataGet().subscribe((response) => {
+			console.log(response);
+		});
 	}
 }

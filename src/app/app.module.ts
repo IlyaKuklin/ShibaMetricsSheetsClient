@@ -14,7 +14,7 @@ import { BASE_PATH } from 'src/api/rest/api';
 import { environment } from 'src/environments/environment';
 import { ClientsModule } from './clients/clients.module';
 import { SourcesModule } from './sources/sources.module';
-import { IntegrationModule } from './integration-google/integration.module';
+import { IntegrationModule } from './integration/integration.module';
 import { AdminModule } from './admin/admin.module';
 
 @NgModule({
