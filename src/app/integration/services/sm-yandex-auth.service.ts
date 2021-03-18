@@ -54,7 +54,7 @@ export class SmYandexAuthService {
 		body.set('client_id', '1443711d95874286bfb64baa41c29459');
 		body.set('client_secret', '6e308b0e1a6d45b1abfad1096c35064c');
 
-		fetch('https://oauth.yandex.ru/token', {
+		return fetch('https://oauth.yandex.ru/token', {
 			body: body,
 			method: 'POST'
 		}).then((res) => {

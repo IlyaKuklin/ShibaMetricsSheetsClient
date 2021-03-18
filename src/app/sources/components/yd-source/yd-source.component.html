@@ -1,1 +1,62 @@
-<p>yd-source works!</p>
+<div class="component-wrapper"
+     *ngIf="!isLoading">
+    <!-- Учетные данные -->
+    <span>Учетные данные</span>
+    <div class="source-category">
+        <div class="source-category_item">
+            <mat-form-field appearance="standard">
+                <mat-label>Аккаунт</mat-label>
+                <mat-select [(ngModel)]="selectedClientId">
+                    <mat-option *ngFor="let client of metadata.clients"
+                                [value]="client.clientId">{{ client.clientInfo }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <mat-divider style="padding-bottom: 1em;"></mat-divider>
+
+    <!-- Даты -->
+    <span>Дата</span>
+    <div class="source-category">
+        <div class="source-category_item">
+            <mat-form-field appearance="standard">
+                <mat-label>Выбор даты</mat-label>
+                <mat-date-range-input [rangePicker]="picker"
+                                      [formGroup]="datesRange">
+                    <input matStartDate
+                           [(ngModel)]="sourceMetadata.startDate"
+                           formControlName="start"
+                           placeholder="Начало" />
+                    <input matEndDate
+                           [(ngModel)]="sourceMetadata.endDate"
+                           formControlName="end"
+                           placeholder="Конец" />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix
+                                       [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <mat-error *ngIf="
+                  datesRange.controls.start.hasError('matStartDateInvalid')
+                ">Invalid start date</mat-error>
+                <mat-error *ngIf="datesRange.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <mat-divider style="padding-bottom: 1em;"></mat-divider>
+
+    <!-- Метрики -->
+    <span>Метрики</span>
+    <div class="source-category">
+        <div class="source-category_item">
+            <div class="source-category_item__metricSelect">
+                <ng-select2 [allowClear]="true"
+                            [options]="s2_options"
+                            [data]="metadata.metrics"
+                            [(ngModel)]="selectedMetricIds">
+                </ng-select2>
+            </div>
+        </div>
+    </div>
+</div>

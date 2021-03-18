@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SMSourceFilter } from './sm-source-filter';
 
 
-export interface YDStatisticsRequestDto { 
-    filters?: Array<SMSourceFilter> | null;
-    fieldNames?: Array<string> | null;
-    startDate?: string | null;
-    endDate?: string | null;
+export interface YDMetadataMetric { 
+    id?: number;
+    name?: string | null;
 }
 

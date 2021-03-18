@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/admin.service.ts
@@ -62,8 +61,8 @@ model/user-register-dto.ts
 model/web-property-summary.ts
 model/yd-client-type.ts
 model/yd-client.ts
-model/yd-source-metadata-dto.ts
-model/yd-source-metadata-filter.ts
-model/yd-source-metadata-metric.ts
+model/yd-metadata-dto.ts
+model/yd-metadata-filter.ts
+model/yd-metadata-metric.ts
 model/yd-statistics-request-dto.ts
 variables.ts
