@@ -17,8 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { SMSourceUpdateYDDataDto } from '../model/models';
 import { YDMetadataDto } from '../model/models';
-import { YDStatisticsRequestDto } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -229,14 +229,14 @@ export class YandexDirectApiService {
     }
 
     /**
-     * @param yDStatisticsRequestDto 
+     * @param sMSourceUpdateYDDataDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiYandexDirectReportPost(yDStatisticsRequestDto?: YDStatisticsRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<string>;
-    public apiYandexDirectReportPost(yDStatisticsRequestDto?: YDStatisticsRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<string>>;
-    public apiYandexDirectReportPost(yDStatisticsRequestDto?: YDStatisticsRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<string>>;
-    public apiYandexDirectReportPost(yDStatisticsRequestDto?: YDStatisticsRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiYandexDirectReportPost(sMSourceUpdateYDDataDto?: SMSourceUpdateYDDataDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<string>;
+    public apiYandexDirectReportPost(sMSourceUpdateYDDataDto?: SMSourceUpdateYDDataDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<string>>;
+    public apiYandexDirectReportPost(sMSourceUpdateYDDataDto?: SMSourceUpdateYDDataDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<string>>;
+    public apiYandexDirectReportPost(sMSourceUpdateYDDataDto?: SMSourceUpdateYDDataDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -279,7 +279,7 @@ export class YandexDirectApiService {
         }
 
         return this.httpClient.post<string>(`${this.configuration.basePath}/api/YandexDirect/report`,
-            yDStatisticsRequestDto,
+            sMSourceUpdateYDDataDto,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

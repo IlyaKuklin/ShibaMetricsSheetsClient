@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { YDSourceMetadataDto } from './yd-source-metadata-dto';
 
 
-export interface YDSourceMetadataDto { 
-    startDate?: string | null;
-    endDate?: string | null;
-    selectedClientId?: string | null;
-    selectedMetricIds?: Array<string> | null;
+export interface SMSourceUpdateYDDataDto { 
+    id?: number;
+    metadata?: YDSourceMetadataDto;
 }
 

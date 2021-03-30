@@ -6,7 +6,7 @@
         <div class="source-category_item">
             <mat-form-field appearance="standard">
                 <mat-label>Аккаунт</mat-label>
-                <mat-select [(ngModel)]="selectedClientId">
+                <mat-select [(ngModel)]="sourceMetadata.selectedClientId">
                     <mat-option *ngFor="let client of metadata.clients"
                                 [value]="client.clientId">{{ client.clientInfo }}</mat-option>
                 </mat-select>
@@ -54,9 +54,27 @@
                 <ng-select2 [allowClear]="true"
                             [options]="s2_options"
                             [data]="metadata.metrics"
-                            [(ngModel)]="selectedMetricIds">
+                            [(ngModel)]="sourceMetadata.selectedMetricIds">
                 </ng-select2>
             </div>
         </div>
+
+        <div class="source-category_item">
+            <div class="source-category_item__metricSelect">
+                <mat-checkbox color="primary"
+                              [(ngModel)]="splitByDay"
+                              (change)="onSplitByDayChange($event)">
+                    Разбить по дням
+                </mat-checkbox>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding-top: 2em;">
+        <button mat-raised-button
+                color="accent"
+                (click)="processData()">
+            Получить данные
+        </button>
     </div>
 </div>

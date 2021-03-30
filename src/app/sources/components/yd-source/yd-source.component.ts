@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { SMSourceDto, YandexDirectApiService, YDMetadataDto } from 'src/api/rest/api';
+import { SMSourceDto, YandexDirectApiService, YDMetadataDto, YDSourceMetadataDto } from 'src/api/rest/api';
 import { SmYandexAuthService } from 'src/app/integration/services/sm-yandex-auth.service';
 import { Options } from 'select2';
 import * as _moment from 'moment';
@@ -20,15 +20,14 @@ export class YdSourceComponent implements OnInit {
 
 	@Input() id: number;
 	source: SMSourceDto;
-	sourceMetadata = {
+	sourceMetadata: YDSourceMetadataDto = {
 		startDate: '',
-		endDate: ''
-	}
+		endDate: '',
+		selectedClientId: '',
+		selectedMetricIds: []
+	};
 
 	metadata: YDMetadataDto;
-
-	selectedClientId: string;
-	selectedMetricIds: string[];
 
 	datesRange: FormGroup = new FormGroup({
 		start: new FormControl(),
@@ -46,6 +45,26 @@ export class YdSourceComponent implements OnInit {
 
 			this.isLoading = false;
 		});
+	}
+
+	processData(): void {
+
+		console.log(this.sourceMetadata);
+
+		this.yandexDirectApiService
+			.apiYandexDirectReportPost({
+				id: this.id,
+				//reportRequestDto: {endDate: '', fieldNames: [], filters: [], startDate: '' },
+				metadata: {
+					endDate: _moment(this.sourceMetadata.endDate).format('YYYY-MM-DD'),
+					startDate: _moment(this.sourceMetadata.startDate).format('YYYY-MM-DD'),
+					selectedClientId: this.sourceMetadata.selectedClientId.toString(),
+					selectedMetricIds: this.sourceMetadata.selectedMetricIds
+				}
+			})
+			.subscribe((res) => {
+				console.log(res);
+			});
 	}
 }
 
@@ -75,3 +94,12 @@ class S2Options {
 		matcher: this.s2_matcher
 	};
 }
+
+// interface IYDSourceMetadata {
+// 	startDate: string;
+// 	endDate: string;
+// 	selectedClientId: string;
+// 	selectedMetricIds: string[];
+
+// 	//filters: SMReportFilter[];
+// }
