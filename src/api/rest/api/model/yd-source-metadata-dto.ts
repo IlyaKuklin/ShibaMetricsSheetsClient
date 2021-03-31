@@ -15,7 +15,7 @@ import { SMSourceFilter } from './sm-source-filter';
 export interface YDSourceMetadataDto { 
     startDate?: string | null;
     endDate?: string | null;
-    selectedClientId?: string | null;
+    selectedClientId?: number;
     selectedMetricIds?: Array<string> | null;
     filters?: Array<SMSourceFilter> | null;
 }

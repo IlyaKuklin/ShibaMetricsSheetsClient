@@ -233,10 +233,10 @@ export class YandexDirectApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiYandexDirectReportPost(sMSourceUpdateYDDataDto?: SMSourceUpdateYDDataDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<string>;
-    public apiYandexDirectReportPost(sMSourceUpdateYDDataDto?: SMSourceUpdateYDDataDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<string>>;
-    public apiYandexDirectReportPost(sMSourceUpdateYDDataDto?: SMSourceUpdateYDDataDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<string>>;
-    public apiYandexDirectReportPost(sMSourceUpdateYDDataDto?: SMSourceUpdateYDDataDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiYandexDirectReportPost(sMSourceUpdateYDDataDto?: SMSourceUpdateYDDataDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
+    public apiYandexDirectReportPost(sMSourceUpdateYDDataDto?: SMSourceUpdateYDDataDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
+    public apiYandexDirectReportPost(sMSourceUpdateYDDataDto?: SMSourceUpdateYDDataDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
+    public apiYandexDirectReportPost(sMSourceUpdateYDDataDto?: SMSourceUpdateYDDataDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -251,9 +251,6 @@ export class YandexDirectApiService {
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
             ];
             httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -278,7 +275,7 @@ export class YandexDirectApiService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<string>(`${this.configuration.basePath}/api/YandexDirect/report`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/api/YandexDirect/report`,
             sMSourceUpdateYDDataDto,
             {
                 responseType: <any>responseType,

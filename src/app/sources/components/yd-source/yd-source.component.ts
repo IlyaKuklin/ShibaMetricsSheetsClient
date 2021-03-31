@@ -1,10 +1,18 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { SMSourceDto, SMSourceFilter, YandexDirectApiService, YDMetadataDto, YDSourceMetadataDto } from 'src/api/rest/api';
+import {
+	SMSourceDto,
+	SMSourceFilter,
+	SourcesApiService,
+	YandexDirectApiService,
+	YDMetadataDto,
+	YDSourceMetadataDto
+} from 'src/api/rest/api';
 import { SmYandexAuthService } from 'src/app/integration/services/sm-yandex-auth.service';
 import { Options } from 'select2';
 import * as _moment from 'moment';
 import { SourceFilterComponent } from '../source-filter/source-filter.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
 	selector: 'sm-yd-source',
@@ -14,7 +22,8 @@ import { SourceFilterComponent } from '../source-filter/source-filter.component'
 export class YdSourceComponent implements OnInit {
 	constructor(
 		private readonly yandexAuthService: SmYandexAuthService,
-		private readonly yandexDirectApiService: YandexDirectApiService
+		private readonly yandexDirectApiService: YandexDirectApiService,
+		private readonly sourcesApiService: SourcesApiService
 	) {}
 
 	isLoading: boolean;
@@ -24,7 +33,7 @@ export class YdSourceComponent implements OnInit {
 	sourceMetadata: YDSourceMetadataDto = {
 		startDate: '',
 		endDate: '',
-		selectedClientId: '',
+		selectedClientId: 0,
 		selectedMetricIds: [],
 		filters: []
 	};
@@ -39,21 +48,33 @@ export class YdSourceComponent implements OnInit {
 	s2_options: Options = new S2Options().s2_options;
 
 	filterOptions: string[];
-	@ViewChild('filtersComponent') filtersComponent: SourceFilterComponent;
 
 	ngOnInit(): void {
 		this.isLoading = true;
 		if (!this.yandexAuthService.isSignedInYandex) this.yandexAuthService.authorize();
 
-		this.yandexDirectApiService.apiYandexDirectMetadataGet().subscribe((response) => {
-			this.metadata = response;
+		forkJoin([
+			this.yandexDirectApiService.apiYandexDirectMetadataGet(),
+			this.sourcesApiService.apiSourcesGet(this.id)
+		]).subscribe((response: [YDMetadataDto, SMSourceDto]) => {
+			console.log(response);
+			this.metadata = response[0];
 			this.filterOptions = this.getFilterOptions();
+			this.source = response[1];
+			if (this.source.rawMetadata) {
+				this.sourceMetadata = JSON.parse(this.source.rawMetadata, this.camelCaseReviver);
+
+				// todo: разобраться с парсингом
+				var temp = this.sourceMetadata.selectedClientId as any;
+				temp = Number.parseInt(temp);
+				this.sourceMetadata.selectedClientId = temp;
+			}
+
+			this.sourceMetadata.selectedClientId = 84235;
+			setInterval(() => {}, 1000);
+
 			this.isLoading = false;
 		});
-
-		setInterval(() => {
-			console.log(this.sourceMetadata.filters)
-		}, 2000)
 	}
 
 	onFiltersChange(filters: SMSourceFilter[]) {
@@ -63,14 +84,13 @@ export class YdSourceComponent implements OnInit {
 	processData(): void {
 		console.log(this.sourceMetadata);
 
-		const filters = this.filtersComponent.model;
-		this.sourceMetadata.selectedClientId = this.sourceMetadata.selectedClientId.toString();
-		this.sourceMetadata.filters;
+		//this.sourceMetadata.selectedClientId = this.sourceMetadata.selectedClientId.toString();
+		this.sourceMetadata.startDate = _moment(this.datesRange.controls['start'].value).format('YYYY-MM-DD');
+		this.sourceMetadata.endDate = _moment(this.datesRange.controls['end'].value).format('YYYY-MM-DD');
 
 		this.yandexDirectApiService
 			.apiYandexDirectReportPost({
 				id: this.id,
-				//reportRequestDto: {endDate: '', fieldNames: [], filters: [], startDate: '' },
 				metadata: this.sourceMetadata
 			})
 			.subscribe((res) => {
@@ -84,6 +104,18 @@ export class YdSourceComponent implements OnInit {
 			result.push(x.name);
 		});
 		return result;
+	}
+
+	camelCaseReviver(key, value) {
+		if (value && typeof value === 'object') {
+			for (var k in value) {
+				if (/^[A-Z]/.test(k) && Object.hasOwnProperty.call(value, k)) {
+					value[k.charAt(0).toLowerCase() + k.substring(1)] = value[k];
+					delete value[k];
+				}
+			}
+		}
+		return value;
 	}
 }
 
