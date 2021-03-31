@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { SMSourceDto, YandexDirectApiService, YDMetadataDto, YDSourceMetadataDto } from 'src/api/rest/api';
+import { SMSourceDto, SMSourceFilter, YandexDirectApiService, YDMetadataDto, YDSourceMetadataDto } from 'src/api/rest/api';
 import { SmYandexAuthService } from 'src/app/integration/services/sm-yandex-auth.service';
 import { Options } from 'select2';
 import * as _moment from 'moment';
+import { SourceFilterComponent } from '../source-filter/source-filter.component';
 
 @Component({
 	selector: 'sm-yd-source',
@@ -24,7 +25,8 @@ export class YdSourceComponent implements OnInit {
 		startDate: '',
 		endDate: '',
 		selectedClientId: '',
-		selectedMetricIds: []
+		selectedMetricIds: [],
+		filters: []
 	};
 
 	metadata: YDMetadataDto;
@@ -36,35 +38,52 @@ export class YdSourceComponent implements OnInit {
 
 	s2_options: Options = new S2Options().s2_options;
 
+	filterOptions: string[];
+	@ViewChild('filtersComponent') filtersComponent: SourceFilterComponent;
+
 	ngOnInit(): void {
 		this.isLoading = true;
 		if (!this.yandexAuthService.isSignedInYandex) this.yandexAuthService.authorize();
 
 		this.yandexDirectApiService.apiYandexDirectMetadataGet().subscribe((response) => {
 			this.metadata = response;
-
+			this.filterOptions = this.getFilterOptions();
 			this.isLoading = false;
 		});
+
+		setInterval(() => {
+			console.log(this.sourceMetadata.filters)
+		}, 2000)
+	}
+
+	onFiltersChange(filters: SMSourceFilter[]) {
+		this.sourceMetadata.filters = filters;
 	}
 
 	processData(): void {
-
 		console.log(this.sourceMetadata);
+
+		const filters = this.filtersComponent.model;
+		this.sourceMetadata.selectedClientId = this.sourceMetadata.selectedClientId.toString();
+		this.sourceMetadata.filters;
 
 		this.yandexDirectApiService
 			.apiYandexDirectReportPost({
 				id: this.id,
 				//reportRequestDto: {endDate: '', fieldNames: [], filters: [], startDate: '' },
-				metadata: {
-					endDate: _moment(this.sourceMetadata.endDate).format('YYYY-MM-DD'),
-					startDate: _moment(this.sourceMetadata.startDate).format('YYYY-MM-DD'),
-					selectedClientId: this.sourceMetadata.selectedClientId.toString(),
-					selectedMetricIds: this.sourceMetadata.selectedMetricIds
-				}
+				metadata: this.sourceMetadata
 			})
 			.subscribe((res) => {
 				console.log(res);
 			});
+	}
+
+	private getFilterOptions(): string[] {
+		let result: string[] = [];
+		this.metadata.filters.forEach((x) => {
+			result.push(x.name);
+		});
+		return result;
 	}
 }
 

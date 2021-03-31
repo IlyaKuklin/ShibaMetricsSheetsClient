@@ -36,6 +36,8 @@ export * from './role';
 export * from './sm-report-type';
 export * from './sm-source-create-update-dto';
 export * from './sm-source-dto';
+export * from './sm-source-filter';
+export * from './sm-source-filter-operator';
 export * from './sm-source-update-ga-data-dto';
 export * from './sm-source-update-metadata-dto';
 export * from './sm-source-update-yd-data-dto';

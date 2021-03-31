@@ -70,6 +70,20 @@
         </div>
     </div>
 
+    <mat-divider style="padding-bottom: 1em; margin-top: 1.34375em;"></mat-divider>
+
+    <span>Фильтры</span>
+    <div class="source-category">
+        <div class="source-category_item">
+            <sm-source-filter #filtersComponent
+                              [options]="filterOptions"
+                              [model]="sourceMetadata?.filters"
+                              (onChange)="onFiltersChange($event)"
+                              >
+            </sm-source-filter>
+        </div>
+    </div>
+
     <div style="padding-top: 2em;">
         <button mat-raised-button
                 color="accent"

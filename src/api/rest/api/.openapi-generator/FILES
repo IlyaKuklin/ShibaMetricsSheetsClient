@@ -51,6 +51,8 @@ model/role.ts
 model/sm-report-type.ts
 model/sm-source-create-update-dto.ts
 model/sm-source-dto.ts
+model/sm-source-filter-operator.ts
+model/sm-source-filter.ts
 model/sm-source-update-ga-data-dto.ts
 model/sm-source-update-metadata-dto.ts
 model/sm-source-update-yd-data-dto.ts

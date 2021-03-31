@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SMSourceFilter } from './sm-source-filter';
 
 
 export interface YDSourceMetadataDto { 
@@ -16,5 +17,6 @@ export interface YDSourceMetadataDto {
     endDate?: string | null;
     selectedClientId?: string | null;
     selectedMetricIds?: Array<string> | null;
+    filters?: Array<SMSourceFilter> | null;
 }
 
