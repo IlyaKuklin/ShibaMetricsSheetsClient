@@ -1,6 +1,7 @@
 <div>
-    <div *ngFor="let filter of model">
-        <div>
+    <div *ngFor="let filter of model"
+         class="filter-wrapper">
+        <div class="filter-wrapper_item">
             <mat-form-field>
                 <mat-label>Фильтр</mat-label>
                 <mat-select [(ngModel)]="filter.name">
@@ -11,7 +12,7 @@
                 </mat-select>
             </mat-form-field>
         </div>
-        <div>
+        <div class="filter-wrapper_item">
             <mat-form-field>
                 <mat-label>Оператор</mat-label>
                 <mat-select [(ngModel)]="filter.operator">
@@ -22,7 +23,7 @@
                 </mat-select>
             </mat-form-field>
         </div>
-        <div>
+        <div class="filter-wrapper_item">
             <mat-form-field>
                 <mat-label>Текст</mat-label>
                 <input type="text"
@@ -30,7 +31,11 @@
                        [(ngModel)]="filter.values">
             </mat-form-field>
         </div>
-        <mat-divider></mat-divider>
+        <div class="filter-wrapper_item">
+            <button mat-button color="warn" (click)="removeFilter(filter)">
+                <mat-icon>remove_circle_outline</mat-icon>
+            </button>
+        </div>
     </div>
     <button mat-raised-button
             (click)="addFilter()">Добавить</button>

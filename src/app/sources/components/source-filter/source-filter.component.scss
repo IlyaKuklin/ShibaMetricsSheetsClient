@@ -1,0 +1,13 @@
+.filter-wrapper {
+	display: flex;
+
+	&_item {
+		> mat-form-field {
+			width: 20em;
+		}
+	}
+
+	&_item:not(:first-child) {
+		margin-left: 2em;
+	}
+}

@@ -29,4 +29,9 @@ export class SourceFilterComponent implements OnInit {
 		});
 		this.onChange.emit(this.model);
 	}
+
+	removeFilter(filter: SMSourceFilter): void {
+		this.model = this.model.filter((x) => x !== filter);
+		this.onChange.emit(this.model);
+	}
 }
