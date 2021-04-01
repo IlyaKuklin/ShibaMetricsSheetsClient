@@ -43,7 +43,7 @@ export class SmYandexAuthService {
 	}
 
 	authorize(): void {
-		var url = `${this.AUTH_URL}/authorize?response_type=code&client_id=${this.APP_ID}`;
+		var url = `${this.AUTH_URL}/authorize?response_type=code&client_id=${this.APP_ID}&force_confirm=true`;
 		window.open(url, 'auth', 'resizable,scrollbars,status,width=600,height=500');
 	}
 
