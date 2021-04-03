@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { YDYesNo } from './yd-yes-no';
 import { YDClientType } from './yd-client-type';
 
 
@@ -18,5 +19,6 @@ export interface YDClient {
     login?: string | null;
     phone?: string | null;
     type?: YDClientType;
+    archived?: YDYesNo;
 }
 

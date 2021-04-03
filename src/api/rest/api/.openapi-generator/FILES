@@ -66,4 +66,5 @@ model/yd-metadata-dto.ts
 model/yd-metadata-filter.ts
 model/yd-metadata-metric.ts
 model/yd-source-metadata-dto.ts
+model/yd-yes-no.ts
 variables.ts
