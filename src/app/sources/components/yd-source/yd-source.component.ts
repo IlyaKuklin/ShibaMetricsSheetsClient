@@ -57,7 +57,6 @@ export class YdSourceComponent implements OnInit {
 			this.yandexDirectApiService.apiYandexDirectMetadataGet(),
 			this.sourcesApiService.apiSourcesGet(this.id)
 		]).subscribe((response: [YDMetadataDto, SMSourceDto]) => {
-			console.log(response);
 			this.metadata = response[0];
 			this.filterOptions = this.getFilterOptions();
 			this.source = response[1];
@@ -70,7 +69,6 @@ export class YdSourceComponent implements OnInit {
 				this.sourceMetadata.selectedClientId = temp;
 			}
 
-			this.sourceMetadata.selectedClientId = 84235;
 			setInterval(() => {}, 1000);
 
 			this.isLoading = false;
@@ -82,8 +80,6 @@ export class YdSourceComponent implements OnInit {
 	}
 
 	processData(): void {
-		console.log(this.sourceMetadata);
-
 		//this.sourceMetadata.selectedClientId = this.sourceMetadata.selectedClientId.toString();
 		this.sourceMetadata.startDate = _moment(this.datesRange.controls['start'].value).format('YYYY-MM-DD');
 		this.sourceMetadata.endDate = _moment(this.datesRange.controls['end'].value).format('YYYY-MM-DD');
@@ -94,7 +90,6 @@ export class YdSourceComponent implements OnInit {
 				metadata: this.sourceMetadata
 			})
 			.subscribe((res) => {
-				console.log(res);
 			});
 	}
 
