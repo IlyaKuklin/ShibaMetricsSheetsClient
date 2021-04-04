@@ -28,13 +28,13 @@ export class SmGoogleAuthService {
 
   signIn(): void {
     this.googleAuthService.getAuth().subscribe((auth) => {
-      auth.signIn({prompt: 'select_account'}).then((response) => {
+      auth.signIn({ prompt: 'select_account' }).then((response) => {
         const authResponse = response.getAuthResponse();
+        const profile = response.getBasicProfile();
+
         window.localStorage[SmGoogleAuthService.STORAGE_KEY] = JSON.stringify(
           authResponse
         );
-
-        var profile = response.getBasicProfile();
 
         this.flow.next(true);
       });
