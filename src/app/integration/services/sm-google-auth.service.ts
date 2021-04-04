@@ -1,5 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { GoogleAuthService } from 'ng-gapi';
+import { Subject } from 'rxjs';
 import GoogleUser = gapi.auth2.GoogleUser;
 
 @Injectable({
@@ -10,6 +11,8 @@ export class SmGoogleAuthService {
 
   static readonly STORAGE_KEY: string = 'gapi_data';
   private user: GoogleUser = undefined;
+
+  flow = new Subject<any>();
 
   get isSignedInGoogle(): boolean {
     return !!window.localStorage[SmGoogleAuthService.STORAGE_KEY];
@@ -25,12 +28,15 @@ export class SmGoogleAuthService {
 
   signIn(): void {
     this.googleAuthService.getAuth().subscribe((auth) => {
-      auth.signIn().then((response) => {
-        //this.signInSuccessHandler(res)
+      auth.signIn({prompt: 'select_account'}).then((response) => {
         const authResponse = response.getAuthResponse();
         window.localStorage[SmGoogleAuthService.STORAGE_KEY] = JSON.stringify(
           authResponse
         );
+
+        var profile = response.getBasicProfile();
+
+        this.flow.next(true);
       });
     });
   }
