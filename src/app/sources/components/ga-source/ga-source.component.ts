@@ -94,6 +94,7 @@ export class GaSourceComponent implements OnInit {
     if (!this.googleAuthService.isUserSignedIn()) {
       this.googleAuthService.flow.subscribe(() => {
         authorized = true;
+        this.googleAuthService.flow.unsubscribe();
       });
       this.googleAuthService.signIn();
 
