@@ -43,6 +43,7 @@ export class GaSourceComponent implements OnInit {
   sourceMetadata: GASourceMetadataDto = {
     startDate: '',
     endDate: '',
+    selectedAccountId: '',
     selectedSummaryId: '',
     selectedPropertyId: '',
     selectedProfileId: '',
@@ -50,11 +51,15 @@ export class GaSourceComponent implements OnInit {
     selectedDimensionIds: [],
   };
 
+  get accounts(): string[] {
+    return this.googleAuthService.getSignedInAccountNames();
+  }
+
   metadata: GAMetadataDto;
   gaMetrics: GAMetricGroupingDto[];
   gaDimensions: GADimensionGroupingDto[];
 
-  summaries: AccountSummary[];
+  summaries: AccountSummary[] = [];
 
   get properties(): WebPropertySummary[] {
     const summary = this.summaries.find(
@@ -87,29 +92,15 @@ export class GaSourceComponent implements OnInit {
 
   s2_options: Options;
 
-  ngOnInit(): void {
-    this.isLoading = true;
-
-    let authorized = false;
-    if (!this.googleAuthService.isUserSignedIn()) {
-      this.googleAuthService.flow.subscribe(() => {
-        authorized = true;
-        this.googleAuthService.flow.unsubscribe();
-      });
-      this.googleAuthService.signIn();
-
-      const interval = setInterval(() => {
-        if (authorized) {
-          this.getDataFromServer();
-          clearInterval(interval);
-        }
-      }, 1000);
-    } else this.getDataFromServer();
-  }
+  ngOnInit(): void {}
 
   private getDataFromServer() {
+    const token = this.googleAuthService.getTokenByAccount(
+      this.sourceMetadata.selectedAccountId
+    );
+
     forkJoin([
-      this.googleAnalyticsApiService.apiGoogleAnalyticsMetadataGet(),
+      this.googleAnalyticsApiService.apiGoogleAnalyticsMetadataGet(token),
       this.sourcesApiService.apiSourcesGet(this.id),
     ]).subscribe((response: [GAMetadataDto, SMSourceDto]) => {
       this.metadata = response[0];
@@ -118,6 +109,7 @@ export class GaSourceComponent implements OnInit {
       this.gaDimensions = this.metadata.dimensionGroupings;
 
       this.source = response[1];
+      console.log(this.source)
       if (this.source.rawMetadata) {
         this.sourceMetadata = JSON.parse(
           this.source.rawMetadata,
@@ -131,6 +123,32 @@ export class GaSourceComponent implements OnInit {
     });
 
     this.s2_options = new S2Options().s2_options;
+  }
+
+  addGoogleAccount(): void {
+    this.googleAuthService.signIn();
+  }
+
+  onAccountChange() {
+    //this.isLoading = true;
+    let authorized = false;
+    if (
+      !this.googleAuthService.isUserSignedIn(
+        this.sourceMetadata.selectedAccountId
+      )
+    ) {
+      this.googleAuthService.flow.subscribe(() => {
+        authorized = true;
+        this.googleAuthService.flow.unsubscribe();
+      });
+      this.googleAuthService.signIn();
+      const interval = setInterval(() => {
+        if (authorized) {
+          this.getDataFromServer();
+          clearInterval(interval);
+        }
+      }, 1000);
+    } else this.getDataFromServer();
   }
 
   onSummaryChange() {
@@ -165,6 +183,10 @@ export class GaSourceComponent implements OnInit {
   }
 
   processData(): void {
+    const token = this.googleAuthService.getTokenByAccount(
+      this.sourceMetadata.selectedAccountId
+    );
+
     this.sourceMetadata.startDate = this.datesRange.controls['start'].value;
     this.sourceMetadata.endDate = this.datesRange.controls['end'].value;
 
@@ -202,6 +224,7 @@ export class GaSourceComponent implements OnInit {
         id: this.id,
         reportRequests: reportRequests,
         metadata: this.sourceMetadata,
+        token: token
       })
       .subscribe((response) => {
         this.snackBarService.show({

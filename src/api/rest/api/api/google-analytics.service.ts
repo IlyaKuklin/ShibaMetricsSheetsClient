@@ -86,13 +86,20 @@ export class GoogleAnalyticsApiService {
     }
 
     /**
+     * @param token 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiGoogleAnalyticsMetadataGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<GAMetadataDto>;
-    public apiGoogleAnalyticsMetadataGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<GAMetadataDto>>;
-    public apiGoogleAnalyticsMetadataGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<GAMetadataDto>>;
-    public apiGoogleAnalyticsMetadataGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiGoogleAnalyticsMetadataGet(token?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<GAMetadataDto>;
+    public apiGoogleAnalyticsMetadataGet(token?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<GAMetadataDto>>;
+    public apiGoogleAnalyticsMetadataGet(token?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<GAMetadataDto>>;
+    public apiGoogleAnalyticsMetadataGet(token?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (token !== undefined && token !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>token, 'token');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -125,6 +132,7 @@ export class GoogleAnalyticsApiService {
 
         return this.httpClient.get<GAMetadataDto>(`${this.configuration.basePath}/api/GoogleAnalytics/metadata`,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

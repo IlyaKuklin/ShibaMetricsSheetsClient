@@ -20,12 +20,12 @@ export class AuthInterceptor implements HttpInterceptor {
 				setHeaders: { Authorization: 'Bearer ' + jwtToken }
 			});
 
-			if (this.googleAuthService.isUserSignedIn()) {
-				const googleToken = this.googleAuthService.getGoogleData().access_token;
-				authReq = authReq.clone({
-					setHeaders: { GoogleAuthorization: 'Google ' + googleToken }
-				});
-			}
+			// if (this.googleAuthService.isUserSignedIn()) {
+			// 	const googleToken = this.googleAuthService.getGoogleData().access_token;
+			// 	authReq = authReq.clone({
+			// 		setHeaders: { GoogleAuthorization: 'Google ' + googleToken }
+			// 	});
+			// }
 
 			if (this.yandexAuthService.isSignedInYandex) {
 				const yandexToken = this.yandexAuthService.accessToken;

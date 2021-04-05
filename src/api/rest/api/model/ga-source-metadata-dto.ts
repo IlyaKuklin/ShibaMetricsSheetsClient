@@ -12,6 +12,7 @@
 
 
 export interface GASourceMetadataDto { 
+    selectedAccountId?: string | null;
     selectedSummaryId?: string | null;
     selectedPropertyId?: string | null;
     selectedProfileId?: string | null;

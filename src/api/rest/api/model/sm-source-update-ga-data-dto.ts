@@ -17,5 +17,6 @@ export interface SMSourceUpdateGADataDto {
     id?: number;
     reportRequests?: Array<GAReportRequest> | null;
     metadata?: GASourceMetadataDto;
+    token?: string | null;
 }
 

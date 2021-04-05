@@ -4,10 +4,25 @@
   <!-- Учетные данные -->
   <span>Учетные данные</span>
   <div class="source-category">
+
     <div class="source-category_item">
       <mat-form-field appearance="standard">
         <mat-label>Аккаунт</mat-label>
+        <mat-select [(ngModel)]="sourceMetadata.selectedAccountId"
+                    (selectionChange)="onAccountChange($event)">
+          <mat-option> <button mat-button (click)="addGoogleAccount()">Добавить</button> </mat-option>
+          <mat-divider></mat-divider>
+          <mat-option *ngFor="let account of accounts"
+                      [value]="account">{{ account}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="source-category_item">
+      <mat-form-field appearance="standard">
+        <mat-label>Summary</mat-label>
         <mat-select [(ngModel)]="sourceMetadata.selectedSummaryId"
+                    [disabled]="!sourceMetadata.selectedAccountId"
                     (selectionChange)="onSummaryChange($event)">
           <mat-option *ngFor="let summary of summaries"
                       [value]="summary.id">{{ summary.name }}</mat-option>
@@ -29,7 +44,7 @@
 
     <div class="source-category_item">
       <mat-form-field appearance="standard">
-        <mat-label>Представление</mat-label>
+        <mat-label>Profile</mat-label>
         <mat-select [(ngModel)]="sourceMetadata.selectedProfileId"
                     [disabled]="!sourceMetadata.selectedPropertyId"
                     (selectionChange)="onProfileChange()">
@@ -74,7 +89,7 @@
 
   <!-- Метрики -->
   <span>Метрики</span>
-  <div class="source-category">
+  <div class="source-category" *ngIf="sourceMetadata.selectedAccountId">
     <div class="source-category_item">
       <div class="source-category_item__metricSelect">
         <ng-select2 [allowClear]="true"
@@ -117,3 +132,5 @@
     </button>
   </div>
 </div>
+
+<sm-loader></sm-loader>
