@@ -18,7 +18,8 @@ import {
 	GASourceMetadataDto,
 	SourcesApiService,
 	SMSourceDto,
-	SMSourceFilter
+	SMSourceFilter,
+	SMSourceFilterOperator
 } from 'src/api/rest/api';
 import * as _moment from 'moment';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
@@ -195,6 +196,10 @@ export class GaSourceComponent implements OnInit {
 			} as GADimension;
 		});
 
+		const filterExpression = this.getFilterExpression();
+
+		//return;
+
 		const reportRequests: GAReportRequest[] = [
 			{
 				viewId: this.sourceMetadata.selectedProfileId,
@@ -205,7 +210,8 @@ export class GaSourceComponent implements OnInit {
 					}
 				],
 				metrics: gaMetrics,
-				dimensions: gaDimensions
+				dimensions: gaDimensions,
+        filtersExpression: filterExpression
 			}
 		];
 		reportRequests[0].includeEmptyRows = true;
@@ -229,10 +235,35 @@ export class GaSourceComponent implements OnInit {
 		let result: string[] = [];
 		this.gaMetrics.forEach((x) => {
 			x.children.forEach((c) => {
-				result.push(c.uiName);
+				result.push(c.id);
 			});
 		});
 		return result;
+	}
+
+	private getFilterExpression(): string {
+		let expressionParts: string[] = [];
+		this.sourceMetadata.filters.forEach((f) => {
+			expressionParts.push(`${f.name}${getOperator(f.operator)}${f.values}`);
+		});
+
+		// TODO: поддержка ИЛИ.
+		const result = expressionParts.join(';');
+		return result;
+
+		// TODO: поддержка >=, <= и dimension filters.
+		function getOperator(enumOperator: SMSourceFilterOperator) {
+			switch (enumOperator) {
+				case SMSourceFilterOperator.Equals:
+					return '==';
+				case SMSourceFilterOperator.NotEquals:
+					return '!=';
+				case SMSourceFilterOperator.GreaterThan:
+					return '>';
+				case SMSourceFilterOperator.LessThan:
+					return '<';
+			}
+		}
 	}
 
 	camelCaseReviver(key, value) {
