@@ -24,6 +24,7 @@ import {
 import * as _moment from 'moment';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { forkJoin } from 'rxjs';
+import { IFilterOption } from '../source-filter/source-filter.component';
 
 @Component({
 	selector: 'sm-ga-source',
@@ -91,7 +92,7 @@ export class GaSourceComponent implements OnInit {
 
 	s2_options: Options;
 
-	filterOptions: string[];
+	filterOptions: IFilterOption[];
 
 	ngOnInit(): void {
 		this.sourcesApiService.apiSourcesGet(this.id).subscribe((source) => {
@@ -100,6 +101,8 @@ export class GaSourceComponent implements OnInit {
 				this.sourceMetadata = JSON.parse(this.source.rawMetadata, this.camelCaseReviver);
 				if (this.sourceMetadata.selectedDimensionIds.indexOf('ga:date') > -1) this.splitByDay = true;
 				this.getDataFromServer();
+
+				console.log(this.source.rawMetadata);
 			}
 		});
 	}
@@ -211,7 +214,7 @@ export class GaSourceComponent implements OnInit {
 				],
 				metrics: gaMetrics,
 				dimensions: gaDimensions,
-        filtersExpression: filterExpression
+				filtersExpression: filterExpression
 			}
 		];
 		reportRequests[0].includeEmptyRows = true;
@@ -231,11 +234,14 @@ export class GaSourceComponent implements OnInit {
 			});
 	}
 
-	private getFilterOptions(): string[] {
-		let result: string[] = [];
+	private getFilterOptions(): IFilterOption[] {
+		let result: IFilterOption[] = [];
 		this.gaMetrics.forEach((x) => {
 			x.children.forEach((c) => {
-				result.push(c.id);
+				result.push({
+					id: c.id,
+					value: c.uiName
+				});
 			});
 		});
 		return result;

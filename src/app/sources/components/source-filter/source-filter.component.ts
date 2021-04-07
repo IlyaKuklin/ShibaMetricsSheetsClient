@@ -11,7 +11,7 @@ export class SourceFilterComponent implements OnInit {
 
 	operatorKeys: string[];
 
-	@Input() options: string[];
+	@Input() options: IFilterOption[];
 	@Input() model: SMSourceFilter[];
 	@Output() onChange = new EventEmitter<SMSourceFilter[]>();
 
@@ -41,4 +41,9 @@ export class SourceFilterComponent implements OnInit {
 	}
 
 	//private getOperatorTypeByIndex()
+}
+
+export interface IFilterOption {
+  id: string;
+  value: string;
 }

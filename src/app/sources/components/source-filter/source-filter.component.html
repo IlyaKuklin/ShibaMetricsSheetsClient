@@ -6,8 +6,8 @@
                 <mat-label>Фильтр</mat-label>
                 <mat-select [(ngModel)]="filter.name">
                     <mat-option *ngFor="let option of options"
-                                [value]="option">
-                        {{option}}
+                                [value]="option.id">
+                        {{option.value}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
