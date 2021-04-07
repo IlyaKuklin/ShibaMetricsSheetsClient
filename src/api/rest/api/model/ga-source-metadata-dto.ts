@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SMSourceFilter } from './sm-source-filter';
 
 
 export interface GASourceMetadataDto { 
@@ -20,5 +21,6 @@ export interface GASourceMetadataDto {
     endDate?: string | null;
     selectedMetricIds?: Array<string> | null;
     selectedDimensionIds?: Array<string> | null;
+    filters?: Array<SMSourceFilter> | null;
 }
 
