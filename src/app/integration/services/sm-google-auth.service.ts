@@ -25,6 +25,7 @@ export class SmGoogleAuthService {
 			alert('time');
 
 			//this.googleAuthService.getAuth().subscribe((auth) => {});
+			return false;
 		}
 
 		return !!userData;

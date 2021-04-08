@@ -107,7 +107,8 @@ export class GaSourceComponent implements OnInit {
 					filter.operator = keys[filter.operator];
 				});
 
-				this.getDataFromServer();
+				//this.getDataFromServer();
+				this.onAccountChange();
 			}
 		});
 	}
