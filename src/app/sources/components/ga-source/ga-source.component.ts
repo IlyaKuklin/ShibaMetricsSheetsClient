@@ -108,8 +108,6 @@ export class GaSourceComponent implements OnInit {
 				});
 
 				this.getDataFromServer();
-
-				console.log(this.sourceMetadata);
 			}
 		});
 	}
@@ -123,12 +121,6 @@ export class GaSourceComponent implements OnInit {
 			this.gaMetrics = this.metadata.metricGroupings;
 			this.gaDimensions = this.metadata.dimensionGroupings;
 			this.filterOptions = this.getFilterOptions();
-
-			// this.source = response[1];
-			// if (this.source.rawMetadata) {
-			// 	this.sourceMetadata = JSON.parse(this.source.rawMetadata, this.camelCaseReviver);
-			// 	if (this.sourceMetadata.selectedDimensionIds.indexOf('ga:date') > -1) this.splitByDay = true;
-			// }
 
 			this.isLoading = false;
 		});
@@ -208,8 +200,6 @@ export class GaSourceComponent implements OnInit {
 
 		const filterExpression = this.getFilterExpression();
 
-		//return;
-
 		const reportRequests: GAReportRequest[] = [
 			{
 				viewId: this.sourceMetadata.selectedProfileId,
@@ -247,9 +237,13 @@ export class GaSourceComponent implements OnInit {
 			x.children.forEach((c) => {
 				result.push({
 					id: c.id,
-					value: c.uiName
+					value: `${c.uiName} (${c.id})`
 				});
 			});
+		});
+
+		result.sort((a, b) => {
+			return a.value > b.value ? 1 : -1;
 		});
 		return result;
 	}
