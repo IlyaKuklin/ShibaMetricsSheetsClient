@@ -100,9 +100,16 @@ export class GaSourceComponent implements OnInit {
 			if (this.source.rawMetadata) {
 				this.sourceMetadata = JSON.parse(this.source.rawMetadata, this.camelCaseReviver);
 				if (this.sourceMetadata.selectedDimensionIds.indexOf('ga:date') > -1) this.splitByDay = true;
+
+				// TODO: костыль для перечисления фильтров.
+				var keys = Object.keys(SMSourceFilterOperator).map((key) => SMSourceFilterOperator[key]);
+				this.sourceMetadata.filters.forEach((filter) => {
+					filter.operator = keys[filter.operator];
+				});
+
 				this.getDataFromServer();
 
-				console.log(this.source.rawMetadata);
+				console.log(this.sourceMetadata);
 			}
 		});
 	}
