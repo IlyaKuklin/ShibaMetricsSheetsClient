@@ -135,6 +135,9 @@ export class GaSourceComponent implements OnInit {
 
 	onAccountChange() {
 		//this.isLoading = true;
+
+		if (!this.sourceMetadata.selectedAccountId) return;
+
 		let authorized = false;
 		if (!this.googleAuthService.isUserSignedIn(this.sourceMetadata.selectedAccountId)) {
 			this.googleAuthService.flow.subscribe(() => {

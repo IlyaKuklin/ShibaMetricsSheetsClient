@@ -32,7 +32,7 @@ export class AdminViewComponent implements OnInit {
 		this.adminApiService.apiAdminSheetsTestPost().subscribe((res) => console.log(res));
 	}
 
-	testEnum() {
-		this.adminApiService.apiAdminEnumTestGet().subscribe((res) => console.log(res));
+	test() {
+		this.adminApiService.apiAdminTestGet(9).subscribe((res) => console.log(res));
 	}
 }
