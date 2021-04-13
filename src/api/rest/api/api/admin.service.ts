@@ -84,13 +84,20 @@ export class AdminApiService {
     }
 
     /**
+     * @param token 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAdminGaMetadataPatch(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiAdminGaMetadataPatch(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiAdminGaMetadataPatch(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiAdminGaMetadataPatch(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiAdminGaMetadataPatch(token?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
+    public apiAdminGaMetadataPatch(token?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
+    public apiAdminGaMetadataPatch(token?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
+    public apiAdminGaMetadataPatch(token?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (token !== undefined && token !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>token, 'token');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -121,6 +128,7 @@ export class AdminApiService {
         return this.httpClient.patch<any>(`${this.configuration.basePath}/api/Admin/ga/metadata`,
             null,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
