@@ -246,6 +246,15 @@ export class GaSourceComponent implements OnInit {
 			});
 		});
 
+		this.gaDimensions.forEach((x) => {
+			x.children.forEach((c) => {
+				result.push({
+					id: c.id,
+					value: `${c.uiName} (${c.id})`
+				});
+			});
+		});
+
 		result.sort((a, b) => {
 			return a.value > b.value ? 1 : -1;
 		});
