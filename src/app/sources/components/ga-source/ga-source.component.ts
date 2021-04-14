@@ -282,6 +282,8 @@ export class GaSourceComponent implements OnInit {
 					return '>';
 				case SMSourceFilterOperator.LessThan:
 					return '<';
+				case SMSourceFilterOperator.Contains:
+					return '=@';
 			}
 		}
 	}
