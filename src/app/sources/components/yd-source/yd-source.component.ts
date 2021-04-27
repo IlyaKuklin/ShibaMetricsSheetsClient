@@ -13,6 +13,7 @@ import { Options } from 'select2';
 import * as _moment from 'moment';
 import { SourceFilterComponent } from '../source-filter/source-filter.component';
 import { forkJoin } from 'rxjs';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
 	selector: 'sm-yd-source',
@@ -23,7 +24,8 @@ export class YdSourceComponent implements OnInit {
 	constructor(
 		private readonly yandexAuthService: SmYandexAuthService,
 		private readonly yandexDirectApiService: YandexDirectApiService,
-		private readonly sourcesApiService: SourcesApiService
+		private readonly sourcesApiService: SourcesApiService,
+		private readonly snackBarService: SnackbarService
 	) {}
 
 	isLoading: boolean;
@@ -90,6 +92,10 @@ export class YdSourceComponent implements OnInit {
 				metadata: this.sourceMetadata
 			})
 			.subscribe((res) => {
+				this.snackBarService.show({
+					duration: 1000,
+					message: 'Таблица Google Sheets обновлена'
+				});
 			});
 	}
 
