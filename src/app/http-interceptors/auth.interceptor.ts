@@ -27,12 +27,12 @@ export class AuthInterceptor implements HttpInterceptor {
 			// 	});
 			// }
 
-			if (this.yandexAuthService.isSignedInYandex) {
-				const yandexToken = this.yandexAuthService.accessToken;
-				authReq = authReq.clone({
-					setHeaders: { YandexAuthorization: 'Yandex ' + yandexToken }
-				});
-			}
+			// if (this.yandexAuthService.isSignedInYandex) {
+			// 	const yandexToken = this.yandexAuthService.accessToken;
+			// 	authReq = authReq.clone({
+			// 		setHeaders: { YandexAuthorization: 'Yandex ' + yandexToken }
+			// 	});
+			// }
 
 			return next.handle(authReq);
 		}

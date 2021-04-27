@@ -52,7 +52,7 @@ export class YdSourceComponent implements OnInit {
 	filterOptions: string[];
 
 	ngOnInit(): void {
-		this.isLoading = true;
+		//this.isLoading = true;
 		if (!this.yandexAuthService.isSignedInYandex) this.yandexAuthService.authorize();
 
 		forkJoin([

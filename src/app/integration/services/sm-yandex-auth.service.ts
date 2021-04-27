@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { YandexDirectApiService } from 'src/api/rest/api';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class SmYandexAuthService {
-	constructor() {}
+	constructor(private readonly ydService: YandexDirectApiService) {}
 
 	// TODO: в конфиг через provider
 	private readonly APP_ID: string = '1443711d95874286bfb64baa41c29459';
@@ -12,29 +14,42 @@ export class SmYandexAuthService {
 	private readonly STORAGE_KEY: string = 'yapi_data';
 	private readonly AUTH_URL: string = 'https://oauth.yandex.ru';
 
-	get isSignedInYandex(): boolean {
-		return !!window.localStorage[this.STORAGE_KEY];
+	flow = new Subject<any>();
+
+	isSignedInYandex(name: string): boolean {
+		if (!window.localStorage[this.STORAGE_KEY]) return false;
+		const data: IYandexUserData[] = JSON.parse(window.localStorage[this.STORAGE_KEY]);
+		const userData = data.find((x) => x.name == name);
+		if (!userData) return false;
+		return !!userData;
 	}
 
-	get accessToken(): string {
-		if (!this.isSignedInYandex) {
-			//TODO check date and refresh
-		}
-
-		const data = window.localStorage[this.STORAGE_KEY];
-		if (!data) {
-			this.authorize();
-			return;
-		}
-		const json: IYandexAuthData = JSON.parse(data);
-
-		if (json.expirationDate < Date.now()) {
-			// TODO: await fetch
-			this.exchangeRefreshTokenForToken();
-		}
-
-		return json.access_token;
+	getTokenByAccount(accountName: string): string {
+		const data: IYandexUserData[] = JSON.parse(window.localStorage[this.STORAGE_KEY]);
+		const userData = data.find((x) => x.name == accountName);
+		if (!userData) return '';
+		return userData.authData.access_token;
 	}
+
+	// get accessToken(): string {
+	// 	if (!this.isSignedInYandex) {
+	// 		//TODO check date and refresh
+	// 	}
+
+	// 	const data = window.localStorage[this.STORAGE_KEY];
+	// 	if (!data) {
+	// 		this.authorize();
+	// 		return;
+	// 	}
+	// 	const json: IYandexAuthData = JSON.parse(data);
+
+	// 	if (json.expirationDate < Date.now()) {
+	// 		// TODO: await fetch
+	// 		this.exchangeRefreshTokenForToken();
+	// 	}
+
+	// 	return json.access_token;
+	// }
 
 	get refreshToken(): string {
 		const data = window.localStorage[this.STORAGE_KEY];
@@ -59,9 +74,25 @@ export class SmYandexAuthService {
 			method: 'POST'
 		}).then((res) => {
 			res.json().then((tokenResponse: IYandexAuthData) => {
-				const expirationDate = Date.now() + tokenResponse.expires_in;
-				tokenResponse.expirationDate = expirationDate;
-				localStorage[this.STORAGE_KEY] = JSON.stringify(tokenResponse);
+				this.ydService.apiYandexDirectUserDataGet(tokenResponse.access_token).subscribe((userDataResponse) => {
+					console.log(userDataResponse.display_name);
+					const expirationDate = Date.now() + tokenResponse.expires_in;
+					tokenResponse.expirationDate = expirationDate;
+
+					const userData: IYandexUserData = {
+						name: userDataResponse.display_name,
+						authData: tokenResponse
+					};
+
+					let usersArray: IYandexUserData[];
+					if (!window.localStorage[this.STORAGE_KEY]) usersArray = [];
+					else usersArray = JSON.parse(window.localStorage[this.STORAGE_KEY]);
+					usersArray = usersArray.filter((x) => x.name !== userData.name);
+					usersArray.push(userData);
+					window.localStorage[this.STORAGE_KEY] = JSON.stringify(usersArray);
+
+					this.flow.next(true);
+				});
 			});
 		});
 	}
@@ -92,4 +123,9 @@ interface IYandexAuthData {
 	expires_in: number;
 	refresh_token: string;
 	expirationDate: number;
+}
+
+export interface IYandexUserData {
+	name: string;
+	authData: IYandexAuthData;
 }
