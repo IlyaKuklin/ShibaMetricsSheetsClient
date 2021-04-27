@@ -142,7 +142,7 @@ export class GaSourceComponent implements OnInit {
 		if (!this.googleAuthService.isUserSignedIn(this.sourceMetadata.selectedAccountId)) {
 			this.googleAuthService.flow.subscribe(() => {
 				authorized = true;
-				this.googleAuthService.flow.unsubscribe();
+				this.googleAuthService.flow.complete();
 			});
 			this.googleAuthService.signIn();
 			const interval = setInterval(() => {
