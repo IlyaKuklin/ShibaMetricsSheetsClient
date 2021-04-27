@@ -6,7 +6,9 @@ import { YandexDirectApiService } from 'src/api/rest/api';
 	providedIn: 'root'
 })
 export class SmYandexAuthService {
-	constructor(private readonly ydService: YandexDirectApiService) {}
+	constructor(private readonly ydService: YandexDirectApiService) {
+		console.log('SmYandexAuthService');
+	}
 
 	// TODO: в конфиг через provider
 	private readonly APP_ID: string = '1443711d95874286bfb64baa41c29459';
@@ -14,14 +16,18 @@ export class SmYandexAuthService {
 	private readonly STORAGE_KEY: string = 'yapi_data';
 	private readonly AUTH_URL: string = 'https://oauth.yandex.ru';
 
-	flow = new Subject<any>();
-
 	isSignedInYandex(name: string): boolean {
 		if (!window.localStorage[this.STORAGE_KEY]) return false;
 		const data: IYandexUserData[] = JSON.parse(window.localStorage[this.STORAGE_KEY]);
 		const userData = data.find((x) => x.name == name);
 		if (!userData) return false;
 		return !!userData;
+	}
+
+	getSignedInAccountNames(): string[] {
+		if (!window.localStorage[this.STORAGE_KEY]) return [];
+		const data: IYandexUserData[] = JSON.parse(window.localStorage[this.STORAGE_KEY]);
+		return data.map((x) => x.name);
 	}
 
 	getTokenByAccount(accountName: string): string {
@@ -75,12 +81,10 @@ export class SmYandexAuthService {
 		}).then((res) => {
 			res.json().then((tokenResponse: IYandexAuthData) => {
 				this.ydService.apiYandexDirectUserDataGet(tokenResponse.access_token).subscribe((userDataResponse) => {
-					console.log(userDataResponse.display_name);
 					const expirationDate = Date.now() + tokenResponse.expires_in;
 					tokenResponse.expirationDate = expirationDate;
-
 					const userData: IYandexUserData = {
-						name: userDataResponse.display_name,
+						name: userDataResponse.login,
 						authData: tokenResponse
 					};
 
@@ -91,7 +95,7 @@ export class SmYandexAuthService {
 					usersArray.push(userData);
 					window.localStorage[this.STORAGE_KEY] = JSON.stringify(usersArray);
 
-					this.flow.next(true);
+					window.localStorage['yandexFlow'] = '0';
 				});
 			});
 		});

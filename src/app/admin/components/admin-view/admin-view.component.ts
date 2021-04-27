@@ -28,7 +28,17 @@ export class AdminViewComponent implements OnInit {
 	}
 
 	updateClients() {
-		this.ydApiService.apiYandexDirectClientsPatch().subscribe((response) => console.log(response));
+		window.localStorage['yandexFlow'] = '1';
+		this.yandexAuthService.authorize();
+		const interval = setInterval(() => {
+			if (window.localStorage['yandexFlow'] == '0') {
+				let accs = this.yandexAuthService.getSignedInAccountNames();
+				let acc = accs[accs.length - 1];
+				let token = this.yandexAuthService.getTokenByAccount(acc);
+				this.ydApiService.apiYandexDirectClientsPatch(token, acc).subscribe((response) => console.log(response));
+				clearInterval(interval);
+			}
+		}, 1000);
 	}
 
 	testServiceAcc() {

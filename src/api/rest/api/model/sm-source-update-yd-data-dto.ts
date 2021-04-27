@@ -15,5 +15,6 @@ import { YDSourceMetadataDto } from './yd-source-metadata-dto';
 export interface SMSourceUpdateYDDataDto { 
     id?: number;
     metadata?: YDSourceMetadataDto;
+    token?: string | null;
 }
 

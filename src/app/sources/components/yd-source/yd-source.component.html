@@ -3,7 +3,22 @@
     <!-- Учетные данные -->
     <span>Учетные данные</span>
     <div class="source-category">
+
         <div class="source-category_item">
+            <mat-form-field appearance="standard">
+              <mat-label>Аккаунт</mat-label>
+              <mat-select [(ngModel)]="sourceMetadata.selectedAccountId"
+                          (selectionChange)="onAccountChange($event)">
+                <mat-option> <button mat-button
+                          (click)="addYandexAccount()">Добавить</button> </mat-option>
+                <mat-divider></mat-divider>
+                <mat-option *ngFor="let account of accounts"
+                            [value]="account">{{ account}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        <div class="source-category_item" *ngIf="sourceMetadata.selectedAccountId && !isFetching">
             <mat-form-field appearance="standard">
                 <mat-label>Аккаунт</mat-label>
                 <mat-select [(ngModel)]="sourceMetadata.selectedClientId">
@@ -12,6 +27,7 @@
                 </mat-select>
             </mat-form-field>
         </div>
+
     </div>
 
     <mat-divider style="padding-bottom: 1em;"></mat-divider>
@@ -48,7 +64,7 @@
 
     <!-- Метрики -->
     <span>Метрики</span>
-    <div class="source-category">
+    <div class="source-category" *ngIf="sourceMetadata.selectedAccountId && !isFetching">
         <div class="source-category_item">
             <div class="source-category_item__metricSelect">
                 <ng-select2 [allowClear]="true"
@@ -74,7 +90,7 @@
 
     <!-- Фильтры -->
     <span>Фильтры</span>
-    <div class="source-category">
+    <div class="source-category" *ngIf="sourceMetadata.selectedAccountId && !isFetching">
         <div class="source-category_item">
             <sm-source-filter #filtersComponent
                               [options]="filterOptions"
@@ -92,3 +108,5 @@
         </button>
     </div>
 </div>
+
+<sm-loader></sm-loader>

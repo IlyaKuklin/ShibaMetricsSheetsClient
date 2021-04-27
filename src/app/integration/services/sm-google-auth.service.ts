@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, Optional, SkipSelf } from '@angular/core';
 import { GoogleAuthService } from 'ng-gapi';
 import { Subject } from 'rxjs';
 import GoogleUser = gapi.auth2.GoogleUser;

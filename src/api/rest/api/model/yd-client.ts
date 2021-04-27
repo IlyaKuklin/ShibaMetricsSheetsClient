@@ -14,6 +14,7 @@ import { YDClientType } from './yd-client-type';
 
 
 export interface YDClient { 
+    accountId?: string | null;
     clientId?: number;
     clientInfo?: string | null;
     login?: string | null;

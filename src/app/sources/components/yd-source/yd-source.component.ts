@@ -29,16 +29,22 @@ export class YdSourceComponent implements OnInit {
 	) {}
 
 	isLoading: boolean;
+	isFetching: boolean;
 
 	@Input() id: number;
 	source: SMSourceDto;
 	sourceMetadata: YDSourceMetadataDto = {
 		startDate: '',
 		endDate: '',
+		selectedAccountId: '',
 		selectedClientId: 0,
 		selectedMetricIds: [],
 		filters: []
 	};
+
+	get accounts(): string[] {
+		return this.yandexAuthService.getSignedInAccountNames();
+	}
 
 	metadata: YDMetadataDto;
 
@@ -53,28 +59,69 @@ export class YdSourceComponent implements OnInit {
 
 	ngOnInit(): void {
 		//this.isLoading = true;
-		if (!this.yandexAuthService.isSignedInYandex) this.yandexAuthService.authorize();
 
-		forkJoin([
-			this.yandexDirectApiService.apiYandexDirectMetadataGet(),
-			this.sourcesApiService.apiSourcesGet(this.id)
-		]).subscribe((response: [YDMetadataDto, SMSourceDto]) => {
-			this.metadata = response[0];
-			this.filterOptions = this.getFilterOptions();
-			this.source = response[1];
+		this.sourcesApiService.apiSourcesGet(this.id).subscribe((source: SMSourceDto) => {
+			this.source = source;
 			if (this.source.rawMetadata) {
 				this.sourceMetadata = JSON.parse(this.source.rawMetadata, this.camelCaseReviver);
-
-				// todo: разобраться с парсингом
-				var temp = this.sourceMetadata.selectedClientId as any;
-				temp = Number.parseInt(temp);
-				this.sourceMetadata.selectedClientId = temp;
 			}
-
-			setInterval(() => {}, 1000);
-
-			this.isLoading = false;
 		});
+
+		// forkJoin([
+		// 	this.yandexDirectApiService.apiYandexDirectMetadataGet(),
+		// 	this.sourcesApiService.apiSourcesGet(this.id)
+		// ]).subscribe((response: [YDMetadataDto, SMSourceDto]) => {
+		// 	this.metadata = response[0];
+		// 	this.filterOptions = this.getFilterOptions();
+		// 	this.source = response[1];
+		// 	if (this.source.rawMetadata) {
+		// 		this.sourceMetadata = JSON.parse(this.source.rawMetadata, this.camelCaseReviver);
+
+		// 		// todo: разобраться с парсингом
+		// 		var temp = this.sourceMetadata.selectedClientId as any;
+		// 		temp = Number.parseInt(temp);
+		// 		this.sourceMetadata.selectedClientId = temp;
+		// 	}
+
+		// 	setInterval(() => {}, 1000);
+
+		// 	this.isLoading = false;
+		// });
+	}
+
+	onAccountChange() {
+		this.isFetching = true;
+
+		if (!this.sourceMetadata.selectedAccountId) return;
+
+		if (!this.yandexAuthService.isSignedInYandex(this.sourceMetadata.selectedAccountId)) {
+			window.localStorage['yandexFlow'] = '1';
+			this.yandexAuthService.authorize();
+			const interval = setInterval(() => {
+				if (window.localStorage['yandexFlow'] == '0') {
+					this.getDataFromServer();
+					clearInterval(interval);
+				}
+			}, 1000);
+		} else {
+			this.getDataFromServer();
+		}
+	}
+
+	private getDataFromServer() {
+		// const token = this.yandexAuthService.getTokenByAccount(this.sourceMetadata.selectedAccountId);
+
+		this.yandexDirectApiService.apiYandexDirectMetadataGet(this.sourceMetadata.selectedAccountId).subscribe((response: YDMetadataDto) => {
+			this.metadata = response;
+			this.filterOptions = this.getFilterOptions();
+			this.isFetching = false;
+		});
+
+		this.s2_options = new S2Options().s2_options;
+	}
+
+	addYandexAccount(): void {
+		this.yandexAuthService.authorize();
 	}
 
 	onFiltersChange(filters: SMSourceFilter[]) {
@@ -146,12 +193,3 @@ class S2Options {
 		matcher: this.s2_matcher
 	};
 }
-
-// interface IYDSourceMetadata {
-// 	startDate: string;
-// 	endDate: string;
-// 	selectedClientId: string;
-// 	selectedMetricIds: string[];
-
-// 	//filters: SMReportFilter[];
-// }

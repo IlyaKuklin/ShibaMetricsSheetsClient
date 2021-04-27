@@ -86,13 +86,20 @@ export class YandexDirectApiService {
     }
 
     /**
+     * @param token 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiYandexDirectCampaingsPatch(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiYandexDirectCampaingsPatch(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiYandexDirectCampaingsPatch(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiYandexDirectCampaingsPatch(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiYandexDirectCampaingsPatch(token?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
+    public apiYandexDirectCampaingsPatch(token?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
+    public apiYandexDirectCampaingsPatch(token?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
+    public apiYandexDirectCampaingsPatch(token?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (token !== undefined && token !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>token, 'token');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -123,6 +130,7 @@ export class YandexDirectApiService {
         return this.httpClient.patch<any>(`${this.configuration.basePath}/api/YandexDirect/campaings`,
             null,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -133,13 +141,25 @@ export class YandexDirectApiService {
     }
 
     /**
+     * @param token 
+     * @param login 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiYandexDirectClientsPatch(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiYandexDirectClientsPatch(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiYandexDirectClientsPatch(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiYandexDirectClientsPatch(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiYandexDirectClientsPatch(token?: string, login?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
+    public apiYandexDirectClientsPatch(token?: string, login?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
+    public apiYandexDirectClientsPatch(token?: string, login?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
+    public apiYandexDirectClientsPatch(token?: string, login?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (token !== undefined && token !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>token, 'token');
+        }
+        if (login !== undefined && login !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>login, 'login');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -170,6 +190,7 @@ export class YandexDirectApiService {
         return this.httpClient.patch<any>(`${this.configuration.basePath}/api/YandexDirect/clients`,
             null,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -180,13 +201,20 @@ export class YandexDirectApiService {
     }
 
     /**
+     * @param login 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiYandexDirectMetadataGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<YDMetadataDto>;
-    public apiYandexDirectMetadataGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<YDMetadataDto>>;
-    public apiYandexDirectMetadataGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<YDMetadataDto>>;
-    public apiYandexDirectMetadataGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiYandexDirectMetadataGet(login?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<YDMetadataDto>;
+    public apiYandexDirectMetadataGet(login?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<YDMetadataDto>>;
+    public apiYandexDirectMetadataGet(login?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<YDMetadataDto>>;
+    public apiYandexDirectMetadataGet(login?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (login !== undefined && login !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>login, 'login');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -219,6 +247,7 @@ export class YandexDirectApiService {
 
         return this.httpClient.get<YDMetadataDto>(`${this.configuration.basePath}/api/YandexDirect/metadata`,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
