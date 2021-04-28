@@ -11,7 +11,7 @@ import {
 import { SmYandexAuthService } from 'src/app/integration/services/sm-yandex-auth.service';
 import { Options } from 'select2';
 import * as _moment from 'moment';
-import { SourceFilterComponent } from '../source-filter/source-filter.component';
+import { IFilterOption, SourceFilterComponent } from '../source-filter/source-filter.component';
 import { forkJoin } from 'rxjs';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
@@ -46,7 +46,11 @@ export class YdSourceComponent implements OnInit {
 		return this.yandexAuthService.getSignedInAccountNames();
 	}
 
-	metadata: YDMetadataDto;
+	metadata: YDMetadataDto = {
+		clients: [],
+		filters: [],
+		metrics: []
+	};
 
 	datesRange: FormGroup = new FormGroup({
 		start: new FormControl(),
@@ -55,38 +59,19 @@ export class YdSourceComponent implements OnInit {
 
 	s2_options: Options = new S2Options().s2_options;
 
-	filterOptions: string[];
+	filterOptions: IFilterOption[];
 
 	ngOnInit(): void {
-		//this.isLoading = true;
+		this.isLoading = true;
 
 		this.sourcesApiService.apiSourcesGet(this.id).subscribe((source: SMSourceDto) => {
 			this.source = source;
 			if (this.source.rawMetadata) {
 				this.sourceMetadata = JSON.parse(this.source.rawMetadata, this.camelCaseReviver);
+				this.onAccountChange();
 			}
+			this.isLoading = false;
 		});
-
-		// forkJoin([
-		// 	this.yandexDirectApiService.apiYandexDirectMetadataGet(),
-		// 	this.sourcesApiService.apiSourcesGet(this.id)
-		// ]).subscribe((response: [YDMetadataDto, SMSourceDto]) => {
-		// 	this.metadata = response[0];
-		// 	this.filterOptions = this.getFilterOptions();
-		// 	this.source = response[1];
-		// 	if (this.source.rawMetadata) {
-		// 		this.sourceMetadata = JSON.parse(this.source.rawMetadata, this.camelCaseReviver);
-
-		// 		// todo: разобраться с парсингом
-		// 		var temp = this.sourceMetadata.selectedClientId as any;
-		// 		temp = Number.parseInt(temp);
-		// 		this.sourceMetadata.selectedClientId = temp;
-		// 	}
-
-		// 	setInterval(() => {}, 1000);
-
-		// 	this.isLoading = false;
-		// });
 	}
 
 	onAccountChange() {
@@ -109,13 +94,15 @@ export class YdSourceComponent implements OnInit {
 	}
 
 	private getDataFromServer() {
-		// const token = this.yandexAuthService.getTokenByAccount(this.sourceMetadata.selectedAccountId);
+		this.yandexDirectApiService
+			.apiYandexDirectMetadataGet(this.sourceMetadata.selectedAccountId)
+			.subscribe((response: YDMetadataDto) => {
+				this.metadata = response;
+				this.filterOptions = this.getFilterOptions();
+				this.isFetching = false;
 
-		this.yandexDirectApiService.apiYandexDirectMetadataGet(this.sourceMetadata.selectedAccountId).subscribe((response: YDMetadataDto) => {
-			this.metadata = response;
-			this.filterOptions = this.getFilterOptions();
-			this.isFetching = false;
-		});
+				console.log(this.metadata.filters);
+			});
 
 		this.s2_options = new S2Options().s2_options;
 	}
@@ -129,6 +116,8 @@ export class YdSourceComponent implements OnInit {
 	}
 
 	processData(): void {
+		const token = this.yandexAuthService.getTokenByAccount(this.sourceMetadata.selectedAccountId);
+
 		//this.sourceMetadata.selectedClientId = this.sourceMetadata.selectedClientId.toString();
 		this.sourceMetadata.startDate = _moment(this.datesRange.controls['start'].value).format('YYYY-MM-DD');
 		this.sourceMetadata.endDate = _moment(this.datesRange.controls['end'].value).format('YYYY-MM-DD');
@@ -136,7 +125,8 @@ export class YdSourceComponent implements OnInit {
 		this.yandexDirectApiService
 			.apiYandexDirectReportPost({
 				id: this.id,
-				metadata: this.sourceMetadata
+				metadata: this.sourceMetadata,
+				token: token
 			})
 			.subscribe((res) => {
 				this.snackBarService.show({
@@ -146,10 +136,13 @@ export class YdSourceComponent implements OnInit {
 			});
 	}
 
-	private getFilterOptions(): string[] {
-		let result: string[] = [];
+	private getFilterOptions(): IFilterOption[] {
+		let result: IFilterOption[] = [];
 		this.metadata.filters.forEach((x) => {
-			result.push(x.name);
+			result.push({
+				id: x.id.toString(),
+				value: x.name
+			});
 		});
 		return result;
 	}

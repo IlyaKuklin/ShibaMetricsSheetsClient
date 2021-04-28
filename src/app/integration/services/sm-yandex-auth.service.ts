@@ -34,6 +34,11 @@ export class SmYandexAuthService {
 		const data: IYandexUserData[] = JSON.parse(window.localStorage[this.STORAGE_KEY]);
 		const userData = data.find((x) => x.name == accountName);
 		if (!userData) return '';
+
+		if (userData.authData.expirationDate < Date.now()) {
+			alert('time');
+		}
+
 		return userData.authData.access_token;
 	}
 

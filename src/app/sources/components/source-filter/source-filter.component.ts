@@ -44,6 +44,6 @@ export class SourceFilterComponent implements OnInit {
 }
 
 export interface IFilterOption {
-  id: string;
-  value: string;
+	id: string;
+	value: string;
 }
