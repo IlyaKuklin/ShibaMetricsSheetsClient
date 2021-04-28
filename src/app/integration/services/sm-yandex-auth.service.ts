@@ -37,7 +37,7 @@ export class SmYandexAuthService {
 
 		if (userData.authData.expirationDate < Date.now()) {
 			window.localStorage['yandexFlow'] = '1';
-			this.exchangeRefreshTokenForToken(login).then(response => {
+			this.exchangeRefreshTokenForToken(login).then((response) => {
 				return userData.authData.access_token;
 			});
 		}
@@ -51,26 +51,6 @@ export class SmYandexAuthService {
 		if (!userData) return '';
 		return userData.authData.refresh_token;
 	}
-
-	// get accessToken(): string {
-	// 	if (!this.isSignedInYandex) {
-	// 		//TODO check date and refresh
-	// 	}
-
-	// 	const data = window.localStorage[this.STORAGE_KEY];
-	// 	if (!data) {
-	// 		this.authorize();
-	// 		return;
-	// 	}
-	// 	const json: IYandexAuthData = JSON.parse(data);
-
-	// 	if (json.expirationDate < Date.now()) {
-	// 		// TODO: await fetch
-	// 		this.exchangeRefreshTokenForToken();
-	// 	}
-
-	// 	return json.access_token;
-	// }
 
 	authorize(): void {
 		var url = `${this.AUTH_URL}/authorize?response_type=code&client_id=${this.APP_ID}&force_confirm=true`;

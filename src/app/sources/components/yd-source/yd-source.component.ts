@@ -140,7 +140,7 @@ export class YdSourceComponent implements OnInit {
 		let result: IFilterOption[] = [];
 		this.metadata.filters.forEach((x) => {
 			result.push({
-				id: x.id.toString(),
+				id: x.name,
 				value: x.name
 			});
 		});
