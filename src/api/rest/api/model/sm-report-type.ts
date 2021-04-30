@@ -11,12 +11,13 @@
  */
 
 
-export type SMReportType = 'Undefined' | 'NotSet' | 'GA' | 'YD';
+export type SMReportType = 'Undefined' | 'NotSet' | 'GA' | 'YD' | 'FB';
 
 export const SMReportType = {
     Undefined: 'Undefined' as SMReportType,
     NotSet: 'NotSet' as SMReportType,
     Ga: 'GA' as SMReportType,
-    Yd: 'YD' as SMReportType
+    Yd: 'YD' as SMReportType,
+    Fb: 'FB' as SMReportType
 };
 
