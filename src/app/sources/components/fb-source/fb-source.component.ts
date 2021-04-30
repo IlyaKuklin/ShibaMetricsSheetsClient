@@ -10,4 +10,8 @@ export class FbSourceComponent implements OnInit {
 	constructor(private readonly facebookAuthService: SmFacebookAuthService) {}
 
 	ngOnInit(): void {}
+
+  test() {
+    this.facebookAuthService.login();
+  }
 }
