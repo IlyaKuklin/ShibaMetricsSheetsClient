@@ -7,9 +7,16 @@ import { SharedModule } from '../shared/shared.module';
 import { GaSourceComponent } from './components/ga-source/ga-source.component';
 import { YdSourceComponent } from './components/yd-source/yd-source.component';
 import { SourceFilterComponent } from './components/source-filter/source-filter.component';
+import { FbSourceComponent } from './components/fb-source/fb-source.component';
 
 @NgModule({
-	declarations: [ SourcesListComponent, GaSourceComponent, YdSourceComponent, SourceFilterComponent ],
+	declarations: [
+		SourcesListComponent,
+		GaSourceComponent,
+		YdSourceComponent,
+		SourceFilterComponent,
+		FbSourceComponent
+	],
 	imports: [ CommonModule, SourcesRoutingModule, SharedModule ]
 })
 export class SourcesModule {}

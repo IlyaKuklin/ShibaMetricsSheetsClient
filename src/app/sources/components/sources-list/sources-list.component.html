@@ -81,6 +81,10 @@
                             [id]="source.id">
               </sm-yd-source>
 
+              <sm-fb-source *ngIf="source.type == SMReportType.Fb"
+                            [id]="source.id">
+              </sm-fb-source>
+
             </div>
           </div>
         </mat-expansion-panel>
