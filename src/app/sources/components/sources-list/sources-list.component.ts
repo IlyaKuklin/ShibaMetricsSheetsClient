@@ -46,7 +46,7 @@ export class SourcesListComponent implements OnInit {
 		this.dialogService
 			.selectOptionDialog({
 				header: 'Выбор источника',
-				options: [ 'Google Analytics', 'Yandex Direct' ]
+				options: [ 'Google Analytics', 'Yandex Direct', 'Facebook Ads' ]
 			})
 			.subscribe((result: string) => {
 				if (result) {
@@ -55,6 +55,7 @@ export class SourcesListComponent implements OnInit {
 					let type: SMReportType;
 					if (result === 'Google Analytics') type = SMReportType.Ga;
 					else if (result === 'Yandex Direct') type = SMReportType.Yd;
+					else if (result === 'Facebook Ads') type = SMReportType.Fb;
 					else throw new Error('Not Implemented');
 
 					const count = this.model.length + 1;
