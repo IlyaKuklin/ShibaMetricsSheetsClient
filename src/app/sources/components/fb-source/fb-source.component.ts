@@ -12,6 +12,6 @@ export class FbSourceComponent implements OnInit {
 	ngOnInit(): void {}
 
   test() {
-    this.facebookAuthService.login();
+    this.facebookAuthService.authorize();
   }
 }
