@@ -5,6 +5,7 @@ api/admin.service.ts
 api/api.ts
 api/auth.service.ts
 api/clients.service.ts
+api/facebook.service.ts
 api/google-analytics.service.ts
 api/sources.service.ts
 api/yandex-direct.service.ts

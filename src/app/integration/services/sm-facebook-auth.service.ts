@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { FacebookApiService } from 'src/api/rest/api';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class SmFacebookAuthService {
-	constructor(private readonly httpClient: HttpClient) {}
+	constructor(private readonly facebookApiService: FacebookApiService) {}
 
 	authorize() {
 		var url = `https://www.facebook.com/v10.0/dialog/oauth?client_id=261566715709670&redirect_uri=https://localhost:4200/fb-verification/&scope=ads_read`;
@@ -14,17 +15,20 @@ export class SmFacebookAuthService {
 
 	/** Обменять код доступа на краткосрочный токен */
 	exchangeCodeForToken(code: string) {
-		const url = 'https://graph.facebook.com/v10.0/oauth/access_token?';
-		const params = new URLSearchParams({
-			client_id: '261566715709670',
-			redirect_uri: 'https://localhost:4200/fb-verification/',
-			client_secret: '3654071a87f66a4427e13e77eb423b6e',
-			code: code
-		});
+		const redirectUrl = `${window.location.origin}/fb-verification/`;
+		return this.facebookApiService.apiFacebookExchangeCodeForTokenGet(code, redirectUrl);
 
-		return fetch(url + params, {
-			method: 'GET'
-		});
+		// const url = 'https://graph.facebook.com/v10.0/oauth/access_token?';
+		// const params = new URLSearchParams({
+		// 	client_id: '261566715709670',
+		// 	redirect_uri: 'https://localhost:4200/fb-verification/',
+		// 	client_secret: '3654071a87f66a4427e13e77eb423b6e',
+		// 	code: code
+		//});
+
+		// return fetch(url + params, {
+		// 	method: 'GET'
+		// });
 	}
 
 	/** Обменять краткосрочный токен на долгосрочный токен*/
