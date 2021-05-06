@@ -4,6 +4,7 @@ import { GoogleApiModule, NgGapiClientConfig, NG_GAPI_CONFIG } from 'ng-gapi';
 import { YandexApiVerificationCodeReceiverComponent } from './components/yandex-api-verification-code-receiver/yandex-api-verification-code-receiver.component';
 import { IntegrationRoutingModule } from './integration-routing.module';
 import { FbApiVerificationCodeReceiverComponent } from './components/fb-api-verification-code-receiver/fb-api-verification-code-receiver.component';
+import { SharedModule } from '../shared/shared.module';
 
 let gapiClientConfig: NgGapiClientConfig = {
 	client_id: '941267314517-qphpp9fgc0csh3l6ve6bmbjhh1q76b88.apps.googleusercontent.com',
@@ -23,7 +24,8 @@ let gapiClientConfig: NgGapiClientConfig = {
 			provide: NG_GAPI_CONFIG,
 			useValue: gapiClientConfig
 		}),
-		IntegrationRoutingModule
+		IntegrationRoutingModule,
+		SharedModule
 	]
 })
 export class IntegrationModule {}

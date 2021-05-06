@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IFacebookAuthData, SmFacebookAuthService } from '../../services/sm-facebook-auth.service';
+import { SmFacebookAuthService } from '../../services/sm-facebook-auth.service';
 
 @Component({
 	selector: 'sm-fb-api-verification-code-receiver',
@@ -10,27 +10,15 @@ import { IFacebookAuthData, SmFacebookAuthService } from '../../services/sm-face
 export class FbApiVerificationCodeReceiverComponent implements OnInit {
 	constructor(private readonly route: ActivatedRoute, private readonly facebookAuthService: SmFacebookAuthService) {}
 
+	message: string;
+
 	ngOnInit(): void {
-		// this.route.queryParams.subscribe((params) => {
-		// 	const code = params.code;
-		// 	this.facebookAuthService.exchangeCodeForToken(code).then((res) => {
-		// 		res.json().then((result: IFacebookAuthData) => {
-		// 			this.facebookAuthService.exchangeTokenForLongLivedToken(result.access_token).then((res) => {
-		// 				res.json().then((result : IFacebookAuthData) => {
-		// 					console.log(result);
-		// 				});
-		// 			});
-		// 		});
-		// 	});
-		// });
-
-
-    this.route.queryParams.subscribe((params) => {
+		this.route.queryParams.subscribe((params) => {
+			this.message = 'Ожидайте';
 			const code = params.code;
 			this.facebookAuthService.exchangeCodeForToken(code).subscribe((res) => {
-
-        console.log(res);
-				
+				this.facebookAuthService.setUserData(res);
+				this.message = 'Авторизация успешно пройдена, это окно можно закрыть';
 			});
 		});
 	}
