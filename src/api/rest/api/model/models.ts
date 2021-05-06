@@ -2,6 +2,7 @@ export * from './account-summaries';
 export * from './account-summary';
 export * from './client-create-update-dto';
 export * from './client-dto';
+export * from './facebook-auth-data';
 export * from './ga-cohort';
 export * from './ga-cohort-group';
 export * from './ga-date-range';

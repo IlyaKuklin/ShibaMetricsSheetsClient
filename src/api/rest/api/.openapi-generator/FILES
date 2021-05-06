@@ -17,6 +17,7 @@ model/account-summaries.ts
 model/account-summary.ts
 model/client-create-update-dto.ts
 model/client-dto.ts
+model/facebook-auth-data.ts
 model/ga-cohort-group.ts
 model/ga-cohort.ts
 model/ga-date-range.ts
